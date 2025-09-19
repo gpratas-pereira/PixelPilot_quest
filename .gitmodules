@@ -8,3 +8,9 @@
 	url = https://github.com/svpcom/wfb-ng.git
 	branch = master
 
+[submodule "external/OpenXR-SDK-Source"]
+	path = external/OpenXR-SDK-Source
+	url = https://github.com/KhronosGroup/OpenXR-SDK-Source
+[submodule "OpenXR-SDK"]
+	path = OpenXR-SDK
+	url = https://github.com/KhronosGroup/OpenXR-SDK
