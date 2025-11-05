@@ -20,4 +20,14 @@ local.properties
 /app/videonative/compile_commands.json
 /app/wfbngrtl8812/compile_commands.json
 /compile_commands.json
-/jdk-17.0.13+11
+jdk-17.0.13+11/
+*.jar
+*.zip
+*.dll
+*.so
+*.dylib
+*.exe
+*.lib
+*.dll.a
+*.pdb
+*.exp

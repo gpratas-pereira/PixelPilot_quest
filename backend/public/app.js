@@ -1875,7 +1875,7 @@
 
     async updateDeviceChannel(deviceId, newChannel) {
         try {
-            await this.authenticatedRequest(`/api/devices/${deviceId}`, {
+            await this.authenticatedRequest(`/api/devices/${deviceId}/wifi-channel`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1893,7 +1893,7 @@
 
     async updateDeviceDisplayMode(deviceId, newMode) {
         try {
-            await this.authenticatedRequest(`/api/devices/${deviceId}`, {
+            await this.authenticatedRequest(`/api/devices/${deviceId}/display-mode`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

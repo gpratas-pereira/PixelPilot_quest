@@ -4,7 +4,7 @@
 // Update this URL to point to your backend server
 
 // Default backend URL - change this to your server's IP
-#define DEFAULT_BACKEND_URL "http://192.168.68.59:8080"
+#define DEFAULT_BACKEND_URL "http://192.168.68.58:3000"
 
 // Device name prefix
 #define DEVICE_NAME_PREFIX "FPVue VR Device"
