@@ -60,8 +60,11 @@ void VideoDecoder::setOutputSurface(JNIEnv* env, jobject surface, jint idx)
     else
     {
         MLOGD << "Set output non-null surface idx :" << idx;
-        // Throw warning if the surface is set without clearing it first
-        assert(decoder.window[idx] == nullptr);
+        if (decoder.window[idx] != nullptr || decoder.configured[idx])
+        {
+            MLOGD << "Replacing existing decoder surface idx :" << idx;
+            setOutputSurface(env, nullptr, idx);
+        }
         decoder.window[idx] = ANativeWindow_fromSurface(env, surface);
         // open the input pipe - now the decoder will start as soon as enough data is available
         inputPipeClosed = false;
@@ -387,3 +390,4 @@ void VideoDecoder::resetStatistics()
     decodingTime.reset();
     decodingInfo = {};
 }
+

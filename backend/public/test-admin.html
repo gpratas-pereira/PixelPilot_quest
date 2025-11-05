@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Admin Login</title>
+    <link rel="stylesheet" href="/patternfly/patternfly.min.css">
+    <link rel="stylesheet" href="/patternfly/patternfly-addons.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="notification-container" class="pf-v5-c-alert-group pf-m-toast" aria-live="polite" aria-atomic="true"></div>
+
+    <div class="pf-v5-c-page">
+        <header class="pf-v5-c-masthead">
+            <div class="pf-v5-c-masthead__main">
+                <div class="pf-v5-c-masthead__brand">
+                    <a class="pf-v5-c-masthead__brand-link" href="index.html" aria-label="FPVue dashboard">
+                        <span class="pf-v5-c-brand pf-v5-u-font-size-xl pf-v5-u-font-weight-bold">Test Admin</span>
+                    </a>
+                </div>
+            </div>
+            <div class="pf-v5-c-masthead__content">
+                <div class="pf-v5-c-toolbar pf-m-full-height pf-m-static">
+                    <div class="pf-v5-c-toolbar__content">
+                        <div class="pf-v5-c-toolbar__content-section">
+                            <div class="pf-v5-c-toolbar__item pf-m-hidden pf-m-visible-on-sm">
+                                <button class="pf-v5-c-menu-toggle pf-m-full-height" type="button" aria-expanded="false">
+                                    <span class="pf-v5-c-menu-toggle__icon">
+                                        <img class="pf-v5-c-avatar" alt="Avatar image" src="/assets/images/img_avatar-light.svg">
+                                    </span>
+                                    <span id="admin-auth-email">Guest</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="pf-v5-c-page__main" tabindex="-1">
+            <section class="pf-v5-c-page__main-section pf-m-light pf-v5-u-px-lg pf-v5-u-pt-lg pf-v5-u-pb-md">
+                <div class="pf-v5-c-content pf-v5-u-mt-md">
+                    <h1 class="pf-v5-c-title pf-m-2xl">Test Admin Login</h1>
+                    <p class="pf-v5-c-content pf-m-md">
+                        Testing authentication step by step.
+                    </p>
+                </div>
+            </section>
+
+            <section class="pf-v5-c-page__main-section pf-v5-u-px-lg pf-v5-u-pt-md pf-v5-u-pb-xl">
+                <div class="pf-v5-l-grid pf-m-gutter">
+                    <div class="pf-v5-l-grid__item pf-m-12-col pf-m-4-col-on-xl">
+                        <section id="admin-auth-section" class="pf-v5-c-card pf-c-card pf-m-plain pf-m-shadow-sm">
+                            <header class="pf-v5-c-card__header pf-c-card__header">
+                                <div class="pf-v5-c-card__title">
+                                    <h2 class="pf-v5-c-title pf-m-lg">Test authentication</h2>
+                                </div>
+                            </header>
+                            <div class="pf-v5-c-card__body pf-c-card__body">
+                                <p class="pf-v5-c-content pf-m-sm">
+                                    Use Supabase admin credentials to test login.
+                                </p>
+                                <form id="admin-login-form" class="pf-v5-c-form pf-c-form">
+                                    <div class="pf-v5-c-form__group pf-c-form__group">
+                                        <label class="pf-v5-c-form__label pf-c-form__label" for="admin-login-email">
+                                            <span class="pf-v5-c-form__label-text">Email</span>
+                                        </label>
+                                        <div class="pf-v5-c-form__control pf-c-form__control">
+                                            <input type="email" id="admin-login-email" class="pf-v5-c-form-control pf-c-form-control" required placeholder="admin@test.com">
+                                        </div>
+                                    </div>
+                                    <div class="pf-v5-c-form__group pf-c-form__group">
+                                        <label class="pf-v5-c-form__label pf-c-form__label" for="admin-login-password">
+                                            <span class="pf-v5-c-form__label-text">Password</span>
+                                        </label>
+                                        <div class="pf-v5-c-form__control pf-c-form__control">
+                                            <input type="password" id="admin-login-password" class="pf-v5-c-form-control pf-c-form-control" required minlength="6" placeholder="Password">
+                                        </div>
+                                    </div>
+                                    <footer class="pf-v5-c-form__actions pf-c-form__actions">
+                                        <button type="submit" class="pf-v5-c-button pf-c-button pf-m-primary" id="admin-sign-in-btn">Test Sign in</button>
+                                    </footer>
+                                </form>
+                                <div id="admin-auth-alert" class="pf-v5-c-alert pf-c-alert pf-m-inline hidden" role="alert"></div>
+                            </div>
+                        </section>
+                    </div>
+                    
+                    <div class="pf-v5-l-grid__item pf-m-12-col pf-m-8-col-on-xl">
+                        <section id="admin-tools-section" class="pf-v5-c-card pf-c-card pf-m-plain pf-m-shadow-sm hidden" data-required-group="admin">
+                            <header class="pf-v5-c-card__header pf-c-card__header">
+                                <div class="pf-v5-c-card__title">
+                                    <h2 class="pf-v5-c-title pf-m-lg">Login Successful!</h2>
+                                </div>
+                            </header>
+                            <div class="pf-v5-c-card__body pf-c-card__body">
+                                <p class="pf-v5-c-content pf-m-sm">
+                                    You are successfully logged in. Now testing advanced features...
+                                </p>
+                                
+                                <div class="pf-v5-l-grid pf-m-gutter">
+                                    <div class="pf-v5-l-grid__item pf-m-12-col">
+                                        <h3 class="pf-v5-c-title pf-m-md">Test Advanced Authentication Features</h3>
+                                    </div>
+                                    
+                                    <div class="pf-v5-l-grid__item pf-m-6-col">
+                                        <button type="button" class="pf-v5-c-button pf-m-primary pf-m-block" id="test-authenticated-request">
+                                            Test Authenticated API Request
+                                        </button>
+                                        <p class="pf-v5-c-content pf-m-sm" id="api-test-result">Click to test API calls</p>
+                                    </div>
+                                    
+                                    <div class="pf-v5-l-grid__item pf-m-6-col">
+                                        <button type="button" class="pf-v5-c-button pf-m-primary pf-m-block" id="test-session-details">
+                                            Check Session Details
+                                        </button>
+                                        <p class="pf-v5-c-content pf-m-sm" id="session-details">Session info will appear here</p>
+                                    </div>
+                                    
+                                    <div class="pf-v5-l-grid__item pf-m-12-col">
+                                        <button type="button" class="pf-v5-c-button pf-m-primary pf-m-block" id="test-data-loading">
+                                            Test Data Loading (like rewards-admin)
+                                        </button>
+                                        <div id="data-loading-results" class="pf-v5-u-mt-md"></div>
+                                    </div>
+                                    
+                                    <div class="pf-v5-l-grid__item pf-m-12-col">
+                                        <button type="button" class="pf-v5-c-button pf-m-secondary" id="admin-logout-btn">Sign out</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="session-manager.js"></script>
+    <script src="patternfly-v5-bridge.js"></script>
+    <script src="test-admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,363 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FPVue Pilot Profile</title>
+    <link rel="stylesheet" href="/patternfly/patternfly.min.css">
+    <link rel="stylesheet" href="/patternfly/patternfly-addons.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="pf-m-redhat-font">
+    <div id="notification-container" class="pf-v6-c-alert-group pf-m-toast" aria-live="polite" aria-atomic="true"></div>
+
+    <div class="pf-v6-c-page">
+        <header class="pf-v6-c-masthead pf-m-dark">
+            <div class="pf-v6-c-masthead__main">
+                <div class="pf-v6-c-masthead__brand">
+                    <a class="pf-v6-c-masthead__brand-link" href="index.html" aria-label="FPVue dashboard">
+                         <img src="https://vsqxljjsdaatrdvljost.supabase.co/storage/v1/object/public/images/Global%20FPV%20Arena%20Logo.webp" alt="Global FPV Arena" class="pf-v6-c-brand" style="height: 100px; width: auto;">
+                    </a>
+                </div>
+            </div>
+            <div class="pf-v6-c-masthead__content">
+                <div class="pf-v6-c-toolbar pf-m-static masthead-toolbar">
+                    <div class="pf-v6-c-toolbar__content">
+                        <div class="pf-v6-c-toolbar__item pf-m-align-right">
+                            <!-- User Avatar Dropdown -->
+                            <div id="user-avatar-dropdown" class="pf-v6-c-menu hidden" data-required-group="pilot">
+                                <button class="pf-v6-c-menu__toggle pf-m-plain" type="button" id="user-avatar-toggle" aria-expanded="false" aria-haspopup="true" style="border: none;background-color: white;">
+                                    <div class="pf-v6-c-avatar pf-m-md">
+                                        <img id="header-user-avatar" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNGNEY0RjQiLz4KPGNpcmNsZSBjeD0iMjAiIGN5PSIxNiIgcj0iNiIgZmlsbD0iIzZBNkE2QSIvPgo8cGF0aCBkPSJNOCAzMkM4IDI1LjM3MjYgMTMuMzcyNiAyMCAyMCAyMEMyNi42Mjc0IDIwIDMyIDI1LjM3MjYgMzIgMzJIMzBDMzAgMjYuNDc3MSAyNS41MjI5IDIyIDIwIDIyQzE0LjQ3NzEgMjIgMTAgMjYuNDc3MSAxMCAzMkg4WiIgZmlsbD0iIzZBNkE6QSIvPgo8L3N2Zz4K" alt="User avatar" />
+                                    </div>
+                                    <span class="pf-v6-u-ml-sm pf-v6-u-color-light-100" id="header-user-name">Pilot</span>
+                                    <span class="pf-v6-c-menu__toggle-icon pf-v6-u-ml-sm">
+                                        <i class="fas fa-caret-down pf-v6-u-color-light-100" aria-hidden="true"></i>
+                                    </span>
+                                </button>
+                                <div class="pf-v6-c-menu__content">
+                                    <ul class="pf-v6-c-menu__list" hidden>
+                                        <li class="pf-v6-c-menu__list-item">
+                                            <button class="pf-v6-c-menu__item" type="button" id="header-logout-btn">
+                                                <span class="pf-v6-c-menu__item-main">
+                                                    <i class="fas fa-sign-out-alt pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                                    Sign out
+                                                </span>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+ <div class="pf-v6-c-page__sidebar pf-m-dark">
+            <div class="pf-v6-c-page__sidebar-body">
+                <nav class="pf-v6-c-nav">
+                    <ul class="pf-v6-c-nav__list">
+                        <li class="pf-v6-c-nav__item" data-required-group="pilot">
+                            <a class="pf-v6-c-nav__link  pf-m-current" href="index.html" aria-current="page">Profile Management</a>
+                        </li>
+                        <li class="pf-v6-c-nav__item" data-required-group="pilot">
+                            <a class="pf-v6-c-nav__link" href="rewards.html">Rewards Management</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <main class="pf-v6-c-page__main" tabindex="-1">
+            <section class="pf-v6-c-page__main-section pf-m-light pf-v6-u-px-lg pf-v6-u-pt-lg pf-v6-u-pb-md">
+                <div class="pf-v6-c-content pf-v6-u-mt-md">
+                    <h1 class="pf-v6-c-title pf-m-2xl">Pilot Profile Management</h1>
+                    <p class="pf-v6-c-content pf-m-md">
+                        Manage your pilot identity, wallet settings, and racing preferences for seamless track integration.
+                    </p>
+                </div>
+            </section>
+
+            <section class="pf-v6-c-page__main-section pf-v6-u-px-lg pf-v6-u-pt-md pf-v6-u-pb-xl">
+                <div class="pf-v6-l-grid pf-m-gutter">
+                    <div class="pf-v6-l-grid__item pf-m-5-col pf-m-5-col-on-xl">
+                        <section id="auth-section" class="pf-v6-c-card pf-c-card pf-m-plain pf-m-shadow-sm ticket-section">
+                            <header class="pf-v6-c-card__header pf-c-card__header">
+                                <div class="pf-v6-c-card__title">
+                                    <h2 class="pf-v6-c-title pf-m-lg">Account Access</h2>
+                                </div>
+                            </header>
+                            <div class="pf-v6-c-card__body pf-c-card__body">
+                                <p class="pf-v6-c-content pf-m-sm">
+                                    Sign in to manage your pilot profile and access racing features.
+                                </p>
+                                <form id="login-form" class="pf-v6-c-form pf-c-form ticket-form">
+                                    <div class="pf-v6-c-form__group pf-c-form__group">
+                                        <label class="pf-v6-c-form__label pf-c-form__label" for="login-email">
+                                            <span class="pf-v6-c-form__label-text">Email</span>
+                                        </label>
+                                        <div class="pf-v6-c-form__control pf-c-form__control">
+                                            <input type="email" id="login-email" class="pf-v6-c-form-control pf-c-form-control" required placeholder="pilot@example.com">
+                                        </div>
+                                    </div>
+                                    <div class="pf-v6-c-form__group pf-c-form__group">
+                                        <label class="pf-v6-c-form__label pf-c-form__label" for="login-password">
+                                            <span class="pf-v6-c-form__label-text">Password</span>
+                                        </label>
+                                        <div class="pf-v6-c-form__control pf-c-form__control">
+                                            <input type="password" id="login-password" class="pf-v6-c-form-control pf-c-form-control" required minlength="6" placeholder="Your password">
+                                        </div>
+                                    </div>
+                                    <footer class="pf-v6-c-form__actions pf-c-form__actions ticket-actions">
+                                        <button type="submit" class="pf-v6-c-button pf-c-button pf-m-primary" id="sign-in-btn">Sign in</button>
+                                        <button type="button" class="pf-v6-c-button pf-c-button pf-m-tertiary" id="register-btn">Register</button>
+                                    </footer>
+                                    <p class="pf-v6-c-helper-text pf-m-dynamic">
+                                        Use the same email you present on race day for consistent identity management.
+                                    </p>
+                                </form>
+                                <div id="auth-alert" class="pf-v6-c-alert pf-c-alert pf-m-inline hidden" role="alert"></div>
+                                <div id="logged-in-actions" class="pf-v6-c-content pf-m-sm hidden" data-required-group="pilot">
+                                    <p>You are signed in as <strong id="auth-email">pilot</strong>.</p>
+                                    <button type="button" class="pf-v6-c-button pf-c-button pf-m-secondary" id="logout-btn">Sign out</button>
+                                </div>
+                            </div>
+                        </section>
+                        <section id="rewards-access-section" class="pf-v6-c-card pf-c-card pf-m-plain pf-m-shadow-md ticket-section hidden" data-required-group="pilot">
+                            <header class="pf-v6-c-card__header pf-c-card__header">
+                                <div class="pf-v6-c-card__title">
+                                    <h2 class="pf-v6-c-title pf-m-lg">Rewards & Marketplace</h2>
+                                    <p class="pf-v6-c-content pf-m-sm">Access your points, browse marketplace items, and manage your racing achievements.</p>
+                                </div>
+                            </header>
+                            <div class="pf-v6-c-card__body pf-c-card__body">
+                                <div class="pf-v6-c-content pf-m-sm pf-v6-u-mb-md">
+                                    <p>Visit the rewards section to:</p>
+                                    <ul class="pf-v6-c-list">
+                                        <li>Purchase race tickets as marketplace items</li>
+                                        <li>View your reward points balance</li>
+                                        <li>Buy points with USDT from your wallet</li>
+                                        <li>Browse and purchase vehicles, features, and cosmetics</li>
+                                        <li>Track your racing achievements</li>
+                                    </ul>
+                                </div>
+                                <div class="pf-v6-c-content pf-v6-u-text-align-left">
+                                    <a href="rewards.html" class="pf-v6-c-button pf-c-button pf-m-primary pf-m-large" style="color:white">
+                                        Go to Rewards & Marketplace
+                                    </a>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="tickets-list-section" class="pf-v6-c-card pf-c-card pf-m-plain pf-m-shadow-sm ticket-section hidden" data-required-group="pilot">
+                            <header class="pf-v6-c-card__header pf-c-card__header">
+                                <div class="pf-v6-c-card__title">
+                                    <h2 class="pf-v6-c-title pf-m-lg">Your Race Tickets</h2>
+                                </div>
+                            </header>
+                            <div class="pf-v6-c-card__body pf-c-card__body">
+                                <div id="tickets-list" class="tickets-list">
+                                    <div class="pf-v6-c-empty-state pf-m-sm">
+                                        <div class="pf-v6-c-empty-state__content">
+                                            <h3 class="pf-v6-c-title pf-m-md">No tickets yet</h3>
+                                            <p class="pf-v6-c-content pf-m-sm">Purchase race tickets from the rewards marketplace.</p>
+                                            <div class="pf-v6-c-content pf-v6-u-text-align-center pf-v6-u-mt-md">
+                                                <a href="rewards.html" class="pf-v6-c-button pf-c-button pf-m-secondary">
+                                                    Visit Marketplace
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="pf-v6-l-grid__item pf-m-12-col pf-m-4-col-on-xl">
+                        <section id="pilot-profile-section" class="pf-v6-c-card pf-c-card pf-m-plain pf-m-shadow-sm ticket-section hidden" data-required-group="pilot">
+                            <header class="pf-v6-c-card__header pf-c-card__header">
+                                <div class="pf-v6-c-card__title">
+                                    <h2 class="pf-v6-c-title pf-m-lg">Pilot profile</h2>
+                                </div>
+                            </header>
+                            <div class="pf-v6-c-card__body pf-c-card__body">
+                                <p class="pf-v6-c-content pf-m-sm">
+                                    Configure your racing identity and wallet settings for seamless track integration.
+                                </p>
+                                <form id="pilot-profile-form" class="pf-v6-c-form pf-c-form ticket-form">
+                                    <div class="pf-v6-c-form__group">
+                                        <label class="pf-v6-c-form__label" for="pilot-name">
+                                            <span class="pf-v6-c-form__label-text">Display name</span>
+                                        </label>
+                                        <input type="text" id="pilot-name" class="pf-v6-c-form-control" placeholder="Preferred pit lane name" required>
+                                    </div>
+                                    <div class="pf-v6-c-form__group">
+                                        <label class="pf-v6-c-form__label">
+                                            <span class="pf-v6-c-form__label-text">Profile Photo</span>
+                                        </label>
+                                        
+                                        <!-- Current Photo Display -->
+                                        <div id="current-pilot-photo" class="pf-v6-u-mb-md hidden">
+                                            <div class="pf-v6-l-flex pf-m-align-items-center pf-m-gap-md">
+                                                <div class="pf-v6-c-avatar pf-m-lg">
+                                                    <img id="pilot-photo-image" src="" alt="Current profile photo" class="pilot-profile-photo">
+                                                </div>
+                                                <div class="pf-v6-l-flex__item">
+                                                    <p class="pf-v6-c-content pf-m-sm pf-v6-u-mb-xs"><strong>Current Photo</strong></p>
+                                                    <button type="button" id="change-photo-btn" class="pf-v6-c-button pf-m-link pf-m-small">
+                                                        Change Photo
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Photo Upload Component -->
+                                        <div id="pilot-photo-upload"></div>
+                                        <p class="pf-v6-c-form__helper-text">
+                                            <span class="pf-v6-c-form__helper-text-icon">
+                                                <i class="pf-icon pf-icon-info-circle" aria-hidden="true"></i>
+                                            </span>
+                                            Upload a profile photo (JPEG, PNG, WebP, max 5MB). This will be displayed in race results and leaderboards.
+                                        </p>
+                                    </div>
+                                    <div class="pf-v6-c-form__group pf-c-form__group">
+                                        <label class="pf-v6-c-form__label pf-c-form__label" for="pilot-wallet">
+                                            <span class="pf-v6-c-form__label-text">USDT wallet (TRC20 / ERC20)</span>
+                                        </label>
+                                        <div class="pf-v6-c-form__control pf-c-form__control">
+                                            <input type="text" id="pilot-wallet" class="pf-v6-c-form-control pf-c-form-control" placeholder="Wallet address for rewards and payments">
+                                        </div>
+                                        <p class="pf-v6-c-form__helper-text">
+                                            <span class="pf-v6-c-form__helper-text-icon">
+                                                <i class="pf-icon pf-icon-info-circle" aria-hidden="true"></i>
+                                            </span>
+                                            Used for USDT payments and reward point purchases in the marketplace.
+                                        </p>
+                                    </div>
+                                    <div class="pf-v6-c-form__group pf-c-form__group">
+                                        <label class="pf-v6-c-form__label pf-c-form__label" for="pilot-vehicle-id">
+                                            <span class="pf-v6-c-form__label-text">Vehicle/Car Asset ID</span>
+                                        </label>
+                                        <div class="pf-v6-c-form__control pf-c-form__control">
+                                            <select id="pilot-vehicle-id" class="pf-v6-c-form-control pf-c-form-control">
+                                                <option value="">Select a purchased vehicle...</option>
+                                            </select>
+                                        </div>
+                                        <p class="pf-v6-c-form__helper-text">
+                                            <span class="pf-v6-c-form__helper-text-icon">
+                                                <i class="pf-icon pf-icon-info-circle" aria-hidden="true"></i>
+                                            </span>
+                                            Choose from the vehicles you have purchased to link your profile with lap tracking. If none are available, you can leave this blank.
+                                        </p>
+                                    </div>
+                                                            <!-- Selected Vehicle Card -->
+                        <section id="selected-vehicle-section" class="pf-v6-c-card pf-c-card pf-m-plain pf-m-shadow-sm ticket-section hidden" data-required-group="pilot">
+                            <header class="pf-v6-c-card__header pf-c-card__header">
+                                <div class="pf-v6-c-card__title">
+                                    <h2 class="pf-v6-c-title pf-m-lg">Selected Racing Vehicle</h2>
+                                    <p class="pf-v6-c-content pf-m-sm">Your currently assigned vehicle for lap tracking and race participation.</p>
+                                </div>
+                            </header>
+                            <div class="pf-v6-c-card__body pf-c-card__body">
+                                <!-- No Vehicle Selected State -->
+                                <div id="no-vehicle-state" class="pf-v6-c-empty-state pf-m-sm">
+                                    <div class="pf-v6-c-empty-state__content">
+                                        <div class="pf-v6-c-empty-state__icon">
+                                            <i class="fas fa-car pf-v6-u-color-200" aria-hidden="true"></i>
+                                        </div>
+                                        <h3 class="pf-v6-c-title pf-m-md">No Vehicle Selected</h3>
+                                        <p class="pf-v6-c-content pf-m-sm">
+                                            Select a vehicle from your profile settings to enable lap tracking and race participation.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Selected Vehicle Display -->
+                                <div id="selected-vehicle-display" class="hidden">
+                                    <div class="pf-v6-l-flex pf-m-gap-lg pf-m-align-items-start">
+                                        <!-- Vehicle Photo -->
+                                        <div class="pf-v6-l-flex__item pf-m-flex-none">
+                                            <div id="vehicle-photo-container" class="vehicle-photo-container">
+                                                <img id="selected-vehicle-photo" src="" alt="Vehicle photo" class="selected-vehicle-photo">
+                                                <div id="vehicle-photo-fallback" class="vehicle-photo-fallback">
+                                                    <i class="fas fa-car" aria-hidden="true"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Vehicle Details -->
+                                        <div class="pf-v6-l-flex__item">
+                                            <div class="pf-v6-c-description-list pf-m-horizontal-on-md">
+                                                <div class="pf-v6-c-description-list__group">
+                                                    <dt class="pf-v6-c-description-list__term">
+                                                        <span class="pf-v6-c-description-list__text">Vehicle Name</span>
+                                                    </dt>
+                                                    <dd class="pf-v6-c-description-list__description">
+                                                        <div class="pf-v6-c-description-list__text">
+                                                            <span id="selected-vehicle-name">-</span>
+                                                        </div>
+                                                    </dd>
+                                                </div>
+                                                <div class="pf-v6-c-description-list__group">
+                                                    <dt class="pf-v6-c-description-list__term">
+                                                        <span class="pf-v6-c-description-list__text">Vehicle Type</span>
+                                                    </dt>
+                                                    <dd class="pf-v6-c-description-list__description">
+                                                        <div class="pf-v6-c-description-list__text">
+                                                            <span id="selected-vehicle-type">-</span>
+                                                        </div>
+                                                    </dd>
+                                                </div>
+                                                <div class="pf-v6-c-description-list__group">
+                                                    <dt class="pf-v6-c-description-list__term">
+                                                        <span class="pf-v6-c-description-list__text">Vehicle ID</span>
+                                                    </dt>
+                                                    <dd class="pf-v6-c-description-list__description">
+                                                        <div class="pf-v6-c-description-list__text">
+                                                            <code id="selected-vehicle-id">-</code>
+                                                        </div>
+                                                    </dd>
+                                                </div>
+                                                <div class="pf-v6-c-description-list__group">
+                                                    <dt class="pf-v6-c-description-list__term">
+                                                        <span class="pf-v6-c-description-list__text">Source</span>
+                                                    </dt>
+                                                    <dd class="pf-v6-c-description-list__description">
+                                                        <div class="pf-v6-c-description-list__text">
+                                                            <span id="selected-vehicle-source" class="pf-v6-c-label pf-m-blue">
+                                                                <span class="pf-v6-c-label__content">
+                                                                    <span class="pf-v6-c-label__text">Purchase</span>
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </dd>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                                    <footer class="pf-v6-c-form__actions pf-c-form__actions">
+                                        <button type="submit" class="pf-v6-c-button pf-c-button pf-m-primary">Save profile</button>
+                                    </footer>
+                                </form>
+                                <div id="profile-alert" class="pf-v6-c-alert pf-c-alert pf-m-inline hidden" role="alert"></div>
+                            </div>
+                        </section>
+
+                    </div>
+
+                    
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="session-manager.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script src="supabase-storage.js"></script>
+    <script src="patternfly-v6-bridge.js"></script>
+    <script src="profile.js"></script>
+</body>
+</html>
+

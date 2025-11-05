@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FPVue Device Manager</title>
+    <link rel="stylesheet" href="/patternfly/patternfly.min.css">
+    <link rel="stylesheet" href="/patternfly/patternfly-addons.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="pf-m-redhat-font">
+    <div id="notification-container" class="pf-v6-c-alert-group pf-m-toast" aria-live="polite" aria-atomic="true"></div>
+
+    <div class="pf-v6-c-page">
+        <header class="pf-v6-c-masthead pf-m-dark">
+            <div class="pf-v6-c-masthead__main">
+                <div class="pf-v6-c-masthead__brand">
+                    <a class="pf-v6-c-masthead__brand-link" href="index.html" aria-label="FPVue dashboard">
+                         <img src="https://vsqxljjsdaatrdvljost.supabase.co/storage/v1/object/public/images/Global%20FPV%20Arena%20Logo.webp" alt="Global FPV Arena" class="pf-v6-c-brand" style="height: 100px; width: auto;">
+                    </a>
+                </div>
+            </div>
+            <div class="pf-v6-c-masthead__content">
+                <div class="pf-v6-c-toolbar pf-m-static masthead-toolbar">
+                    <div class="pf-v6-c-toolbar__content">
+                        <div class="pf-v6-c-toolbar__item pf-m-align-right">
+                            <!-- User Avatar Dropdown -->
+                            <div id="user-avatar-dropdown" class="pf-v6-c-menu hidden" data-required-group="ops">
+                                <button class="pf-v6-c-menu__toggle pf-m-plain" type="button" id="user-avatar-toggle" aria-expanded="false" aria-haspopup="true" style="border: none;background-color: white;">
+                                    <div class="pf-v6-c-avatar pf-m-md">
+                                        <img id="header-user-avatar" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNGNEY0RjQiLz4KPGNpcmNsZSBjeD0iMjAiIGN5PSIxNiIgcj0iNiIgZmlsbD0iIzZBNkE2QSIvPgo8cGF0aCBkPSJNOCAzMkM4IDI1LjM3MjYgMTMuMzcyNiAyMCAyMCAyMEMyNi42Mjc0IDIwIDMyIDI1LjM3MjYgMzIgMzJIMzBDMzAgMjYuNDc3MSAyNS41MjI5IDIyIDIwIDIyQzE0LjQ3NzEgMjIgMTAgMjYuNDc3MSAxMCAzMkg4WiIgZmlsbD0iIzZBNkE2QSIvPgo8L3N2Zz4K" alt="User avatar" />
+                                    </div>
+                                    <span class="pf-v6-u-ml-sm pf-v6-u-color-light-100" id="header-user-name">Admin</span>
+                                    <span class="pf-v6-c-menu__toggle-icon pf-v6-u-ml-sm">
+                                        <i class="fas fa-caret-down pf-v6-u-color-light-100" aria-hidden="true"></i>
+                                    </span>
+                                </button>
+                                <div class="pf-v6-c-menu__content">
+                                    <ul class="pf-v6-c-menu__list" hidden>
+                                        <li class="pf-v6-c-menu__list-item">
+                                            <button class="pf-v6-c-menu__item" type="button" id="header-logout-btn">
+                                                <span class="pf-v6-c-menu__item-main">
+                                                    <i class="fas fa-sign-out-alt pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                                    Sign out
+                                                </span>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="pf-v6-c-page__sidebar pf-m-dark">
+            <div class="pf-v6-c-page__sidebar-body">
+                <nav class="pf-v6-c-nav" aria-label="Page navigation">
+                    <ul class="pf-v6-c-nav__list">
+                        <li class="pf-v6-c-nav__item pf-c-nav__item" data-required-group="ops">
+                            <a class="pf-v6-c-nav__link pf-m-current" href="index.html" aria-current="page">Device Management</a>
+                        </li>
+                        <li class="pf-v6-c-nav__item" data-required-group="pitlane">
+                            <a class="pf-v6-c-nav__link pf-c-nav__link" href="admin.html">Pitlane Management</a>
+                        </li>
+                        <li class="pf-v6-c-nav__item" data-required-group="rewards_admin">
+                            <a class="pf-v6-c-nav__link" href="rewards-admin.html">Rewards Management</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <main class="pf-v6-c-page__main" tabindex="-1">
+            <section class="pf-v6-c-page__main-section pf-m-light pf-v6-u-px-lg pf-v6-u-pt-lg pf-v6-u-pb-md">
+                <div class="pf-v6-c-content pf-v6-u-mt-md">
+                    <h1 class="pf-v6-c-title pf-m-2xl">Headset operations dashboard</h1>
+                    <p class="pf-v6-c-content pf-m-md">
+                        Monitor start line readiness, device connectivity, and session activity across the FPVue fleet.
+                    </p>
+                </div>
+            </section>
+
+            <section class="pf-v6-c-page__main-section pf-v6-u-px-lg pf-v6-u-pt-md">
+                <div class="pf-v6-l-grid pf-m-gutter">
+                    <div class="pf-v6-l-grid__item pf-m-12-col pf-m-4-col-on-xl">
+                        <section id="dashboard-auth-card" class="pf-v6-c-card pf-c-card pf-m-plain pf-m-shadow-sm">
+                            <header class="pf-v6-c-card__header pf-c-card__header">
+                                <div class="pf-v6-c-card__title">
+                                    <h2 class="pf-v6-c-title pf-m-lg">Crew authentication</h2>
+                                </div>
+                            </header>
+                            <div class="pf-v6-c-card__body pf-c-card__body">
+                                <p class="pf-v6-c-content pf-m-sm">
+                                    Sign in with your Supabase admin credentials to unlock live telemetry and controls.
+                                </p>
+                                <form id="dashboard-login-form" class="pf-v6-c-form pf-c-form ticket-form">
+                                    <div class="pf-v6-c-form__group pf-c-form__group">
+                                        <label class="pf-v6-c-form__label pf-c-form__label" for="dashboard-login-email">
+                                            <span class="pf-v6-c-form__label-text">Email</span>
+                                        </label>
+                                        <div class="pf-v6-c-form__control pf-c-form__control">
+                                            <input type="email" id="dashboard-login-email" class="pf-v6-c-form-control pf-c-form-control" required placeholder="crew@racecontrol.com">
+                                        </div>
+                                    </div>
+                                    <div class="pf-v6-c-form__group pf-c-form__group">
+                                        <label class="pf-v6-c-form__label pf-c-form__label" for="dashboard-login-password">
+                                            <span class="pf-v6-c-form__label-text">Password</span>
+                                        </label>
+                                        <div class="pf-v6-c-form__control pf-c-form__control">
+                                            <input type="password" id="dashboard-login-password" class="pf-v6-c-form-control pf-c-form-control" required minlength="6" placeholder="Supabase password">
+                                        </div>
+                                    </div>
+                                    <footer class="pf-v6-c-form__actions pf-c-form__actions ticket-actions">
+                                        <button type="submit" class="pf-v6-c-button pf-c-button pf-m-primary" id="dashboard-sign-in-btn">Sign in</button>
+                                        <button type="button" class="pf-v6-c-button pf-c-button pf-m-tertiary" id="dashboard-register-btn">Register crew</button>
+                                    </footer>
+                                    <p class="pf-v6-c-helper-text pf-m-dynamic">
+                                        Supabase manages credentials. Use the same email you present on race day.
+                                    </p>
+                                </form>
+                                <div id="dashboard-auth-alert" class="pf-v6-c-alert pf-c-alert pf-m-inline hidden" role="alert"></div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </section>
+
+            <div id="dashboard-content" class="hidden" data-required-group="ops">
+
+            <section class="pf-v6-c-page__main-section pf-m-limit-width pf-m-fill">
+                <div class="pf-v6-c-page__main-body">
+                    <div class="pf-v6-c-card" id="device-operations-section" data-required-group="ops">
+                        <div class="pf-v6-c-card__title">
+                            <div class="pf-v6-c-card__title-text">
+                                <h2 class="pf-v6-c-title pf-m-lg">
+                                    <i class="fas fa-headset pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                    Device Operations Center
+                                </h2>
+                                <p class="pf-v6-c-content">Monitor start line readiness and device connectivity across the FPVue fleet.</p>
+                            </div>
+                            <div class="pf-v6-c-card__actions" style="margin-top:2%">
+                                <button type="button" class="pf-v6-c-button pf-m-primary" id="refresh-btn">
+                                    <i class="fas fa-sync pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                    Refresh devices
+                                </button>
+                            </div>
+                        </div>
+                        <div class="pf-v6-c-card__body">
+                            <!-- First Row: Start Line Control & Device Overview -->
+                            <div class="pf-v6-l-gallery pf-m-gutter pf-v6-u-mb-lg" style="--pf-v6-l-gallery--GridTemplateColumns: 1fr 1fr;">
+                                <div class="pf-v6-c-card">
+                                    <div class="pf-v6-c-card__title">
+                                        <h3 class="pf-v6-c-title pf-m-md">
+                                            <i class="fas fa-flag-checkered pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                            Start line orchestration
+                                        </h3>
+                                    </div>
+                                    <div class="pf-v6-c-card__body">
+                                        <dl class="pf-v6-c-description-list pf-m-horizontal start-line-status pf-v6-u-mb-md">
+                                            <div class="pf-v6-c-description-list__group">
+                                                <dt class="pf-v6-c-description-list__term">Status</dt>
+                                                <dd class="pf-v6-c-description-list__description">
+                                                    <span id="start-line-status-label" class="pf-v6-c-label pf-m-outline">
+                                                        <span class="pf-v6-c-label__content">Idle</span>
+                                                    </span>
+                                                </dd>
+                                            </div>
+                                            <div class="pf-v6-c-description-list__group">
+                                                <dt class="pf-v6-c-description-list__term">Countdown</dt>
+                                                <dd class="pf-v6-c-description-list__description">
+                                                    <span id="start-line-countdown" class="pf-v6-c-label pf-m-outline">
+                                                        <span class="pf-v6-c-label__content">--</span>
+                                                    </span>
+                                                </dd>
+                                            </div>
+                                        </dl>
+                                        <div class="pf-v6-c-button-group pf-m-toggle-group pf-m-stack pf-v6-u-mb-md">
+                                            <button id="arm-start-line" class="pf-v6-c-button pf-m-warning">Arm system</button>
+                                            <button id="start-start-line" class="pf-v6-c-button pf-m-success">Start countdown</button>
+                                        </div>
+                                        <p class="pf-v6-c-helper-text pf-m-dynamic">
+                                            Arming clears headset lights. Starting launches a synchronized five-step countdown across the fleet.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="pf-v6-c-card">
+                                    <div class="pf-v6-c-card__title">
+                                        <h3 class="pf-v6-c-title pf-m-md">
+                                            <i class="fas fa-chart-bar pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                            Headset overview
+                                        </h3>
+                                    </div>
+                                    <div class="pf-v6-c-card__body">
+                                        <dl class="pf-v6-c-description-list pf-m-horizontal">
+                                            <div class="pf-v6-c-description-list__group">
+                                                <dt class="pf-v6-c-description-list__term">Total registered</dt>
+                                                <dd class="pf-v6-c-description-list__description">
+                                                    <span id="summary-total" class="pf-v6-u-font-weight-bold">0</span>
+                                                </dd>
+                                            </div>
+                                            <div class="pf-v6-c-description-list__group">
+                                                <dt class="pf-v6-c-description-list__term">Online</dt>
+                                                <dd class="pf-v6-c-description-list__description">
+                                                    <span id="summary-online" class="pf-v6-u-color-success-700">0</span>
+                                                </dd>
+                                            </div>
+                                            <div class="pf-v6-c-description-list__group">
+                                                <dt class="pf-v6-c-description-list__term">Offline</dt>
+                                                <dd class="pf-v6-c-description-list__description">
+                                                    <span id="summary-offline" class="pf-v6-u-color-danger-700">0</span>
+                                                </dd>
+                                            </div>
+                                            <div class="pf-v6-c-description-list__group">
+                                                <dt class="pf-v6-c-description-list__term">Active sessions</dt>
+                                                <dd class="pf-v6-c-description-list__description">
+                                                    <span id="summary-sessions" class="pf-v6-u-color-info-700">0</span>
+                                                </dd>
+                                            </div>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Second Row: Connected Devices (full width) -->
+                            <div>
+                                <div class="pf-v6-c-card">
+                                    <div class="pf-v6-c-card__title">
+                                        <div class="pf-v6-c-card__title-text">
+                                            <h3 class="pf-v6-c-title pf-m-md">
+                                                <i class="fas fa-wifi pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                                Connected devices
+                                            </h3>
+                                        </div>
+                                        <div class="pf-v6-c-card__actions" style="margin-top:2%">
+                                            <div class="pf-v6-c-input-group">
+                                                <span class="pf-v6-c-input-group__text" aria-hidden="true" style="margin-left: -60px;">
+                                                    <i class="pf-v6-c-button pf-m-plain pf-v6-u-color-200 pf-v6-u-font-size-sm pf-icon pf-icon-search"></i>
+                                                </span>
+                                                <input type="search" id="search-input" class="pf-v6-c-form-control" placeholder="Search by ID, MAC, or name">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pf-v6-c-card__body">
+                                        <div id="devices-list">
+                                            <!-- Empty state - will be replaced by device cards -->
+                                            <div class="pf-v6-c-empty-state pf-m-sm devices-empty-state">
+                                                <div class="pf-v6-c-empty-state__content">
+                                                    <h3 class="pf-v6-c-title pf-m-lg">Loading devices...</h3>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Example device card structure (will be dynamically generated) -->
+                                            <div class="device-card-template pf-v6-c-card pf-m-compact hidden">
+                                                <div class="pf-v6-c-card__header">
+                                                    <div class="pf-v6-c-card__header-main">
+                                                        <div class="pf-v6-c-card__title">
+                                                            <h4 class="pf-v6-c-title pf-m-md device-name">Device Name</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="pf-v6-c-card__actions">
+                                                        <span class="pf-v6-c-label device-status-label pf-m-outline">
+                                                            <span class="pf-v6-c-label__content">Status</span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="pf-v6-c-card__body">
+                                                    <dl class="pf-v6-c-description-list pf-m-horizontal-on-sm">
+                                                        <div class="pf-v6-c-description-list__group">
+                                                            <dt class="pf-v6-c-description-list__term">MAC Address</dt>
+                                                            <dd class="pf-v6-c-description-list__description">
+                                                                <code class="device-mac">--:--:--:--:--:--</code>
+                                                            </dd>
+                                                        </div>
+                                                        <div class="pf-v6-c-description-list__group">
+                                                            <dt class="pf-v6-c-description-list__term">Channel</dt>
+                                                            <dd class="pf-v6-c-description-list__description">
+                                                                <span class="device-channel">--</span>
+                                                            </dd>
+                                                        </div>
+                                                        <div class="pf-v6-c-description-list__group">
+                                                            <dt class="pf-v6-c-description-list__term">Last Seen</dt>
+                                                            <dd class="pf-v6-c-description-list__description">
+                                                                <span class="device-last-seen">--</span>
+                                                            </dd>
+                                                        </div>
+                                                        <div class="pf-v6-c-description-list__group">
+                                                            <dt class="pf-v6-c-description-list__term">IP Address</dt>
+                                                            <dd class="pf-v6-c-description-list__description">
+                                                                <code class="device-ip">---.---.---.---</code>
+                                                            </dd>
+                                                        </div>
+                                                    </dl>
+                                                </div>
+                                                <div class="pf-v6-c-card__footer">
+                                                    <div class="pf-v6-c-button-group pf-m-inline">
+                                                        <button class="pf-v6-c-button pf-m-secondary pf-m-small device-edit-btn" type="button">
+                                                            <i class="fas fa-edit pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                                            Edit
+                                                        </button>
+                                                        <button class="pf-v6-c-button pf-m-tertiary pf-m-small device-connect-btn" type="button">
+                                                            <i class="fas fa-link pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                                            Connect
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Third Row: Lap Timing Sessions (full width) -->
+                            <div class="pf-v6-l-gallery pf-m-gutter" style="--pf-v6-l-gallery--GridTemplateColumns: 1fr;">
+                                <div class="pf-v6-c-card">
+                                    <div class="pf-v6-c-card__title">
+                                        <div class="pf-v6-c-card__title-text">
+                                            <h3 class="pf-v6-c-title pf-m-md">
+                                                <i class="fas fa-stopwatch pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                                Lap timing sessions
+                                            </h3>
+                                        </div>
+                                        <div class="pf-v6-c-card__actions" style="margin-top:2%">
+                                            <button id="refresh-sessions-btn" class="pf-v6-c-button pf-m-secondary pf-m-small">Refresh</button>
+                                        </div>
+                                    </div>
+                                    <div class="pf-v6-c-card__body">
+                                        <div class="pf-v6-l-grid pf-m-gutter pf-v6-u-mb-md">
+                                            <div class="pf-v6-l-grid__item pf-m-12-col pf-m-6-col-on-lg">
+                                                <label class="pf-v6-c-form__label" for="driver-filter">
+                                                    <span class="pf-v6-c-form__label-text">Filter by driver</span>
+                                                </label>
+                                                <input type="text" id="driver-filter" class="pf-v6-c-form-control" placeholder="Driver name">
+                                            </div>
+                                            <div class="pf-v6-l-grid__item pf-m-12-col pf-m-6-col-on-lg">
+                                                <label class="pf-v6-c-form__label" for="track-filter">
+                                                    <span class="pf-v6-c-form__label-text">Filter by track</span>
+                                                </label>
+                                                <input type="text" id="track-filter" class="pf-v6-c-form-control" placeholder="Track name">
+                                            </div>
+                                        </div>
+                                        <div id="sessions-list" class="pf-v6-l-gallery pf-m-gutter">
+                                            <div class="pf-v6-c-empty-state pf-m-sm">
+                                                <div class="pf-v6-c-empty-state__content">
+                                                    <h3 class="pf-v6-c-title pf-m-lg">Loading sessions...</h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            </div>
+
+                <!-- Edit device modal -->
+                <div id="edit-modal" class="pf-v6-c-backdrop pf-c-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="edit-modal-title">
+                    <div class="pf-v6-l-bullseye pf-l-bullseye">
+                        <div class="pf-v6-c-modal-box pf-c-modal-box" role="document">
+                            <button class="pf-v6-c-button pf-c-button pf-m-plain modal-close" type="button" aria-label="Close edit modal">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <header class="pf-v6-c-modal-box__header pf-c-modal-box__header">
+                                <h1 id="edit-modal-title" class="pf-v6-c-modal-box__title pf-c-modal-box__title">Edit device</h1>
+                            </header>
+                            <div class="pf-v6-c-modal-box__body pf-c-modal-box__body">
+                                <form id="edit-device-form" class="pf-v6-c-form pf-c-form">
+                                    <div class="pf-v6-c-form__group pf-c-form__group">
+                                        <label class="pf-v6-c-form__label pf-c-form__label" for="edit-device-name">
+                                            <span class="pf-v6-c-form__label-text">Device name</span>
+                                        </label>
+                                        <div class="pf-v6-c-form__control pf-c-form__control">
+                                            <input type="text" id="edit-device-name" class="pf-v6-c-form-control pf-c-form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="pf-v6-c-form__group pf-c-form__group">
+                                        <label class="pf-v6-c-form__label pf-c-form__label" for="edit-wifi-channel">
+                                            <span class="pf-v6-c-form__label-text">WiFi channel</span>
+                                        </label>
+                                        <div class="pf-v6-c-form__control pf-c-form__control">
+                                            <input type="number" id="edit-wifi-channel" class="pf-v6-c-form-control pf-c-form-control" min="1" max="200" required>
+                                        </div>
+                                    </div>
+                                    <footer class="pf-v6-c-modal-box__footer pf-c-modal-box__footer">
+                                        <div class="pf-v6-c-button-group pf-c-button-group">
+                                            <button type="submit" class="pf-v6-c-button pf-c-button pf-m-primary">Save changes</button>
+                                            <button type="button" class="pf-v6-c-button pf-c-button pf-m-danger" id="delete-device-btn">Delete device</button>
+                                        </div>
+                                    </footer>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Session details modal -->
+                <div id="session-modal" class="pf-v6-c-backdrop pf-c-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="session-modal-title">
+                    <div class="pf-v6-l-bullseye pf-l-bullseye">
+                        <div class="pf-v6-c-modal-box pf-c-modal-box pf-m-lg" role="document">
+                            <button class="pf-v6-c-button pf-c-button pf-m-plain modal-close session-close" type="button" aria-label="Close session modal">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <header class="pf-v6-c-modal-box__header pf-c-modal-box__header">
+                                <h1 id="session-modal-title" class="pf-v6-c-modal-box__title pf-c-modal-box__title">Session details</h1>
+                            </header>
+                            <div class="pf-v6-c-modal-box__body pf-c-modal-box__body">
+                                <div id="session-details" class="pf-v6-l-grid pf-l-grid pf-m-gutter">
+                                    <div class="pf-v6-l-grid__item pf-m-12-col pf-m-4-col-on-lg">
+                                        <dl class="pf-v6-c-description-list pf-c-description-list pf-m-horizontal session-info">
+                                            <div class="pf-v6-c-description-list__group">
+                                                <dt class="pf-v6-c-description-list__term">Driver</dt>
+                                                <dd class="pf-v6-c-description-list__description">
+                                                    <span id="session-driver"></span>
+                                                </dd>
+                                            </div>
+                                            <div class="pf-v6-c-description-list__group">
+                                                <dt class="pf-v6-c-description-list__term">Track</dt>
+                                                <dd class="pf-v6-c-description-list__description">
+                                                    <span id="session-track"></span>
+                                                </dd>
+                                            </div>
+                                            <div class="pf-v6-c-description-list__group">
+                                                <dt class="pf-v6-c-description-list__term">Device</dt>
+                                                <dd class="pf-v6-c-description-list__description">
+                                                    <span id="session-device"></span>
+                                                </dd>
+                                            </div>
+                                            <div class="pf-v6-c-description-list__group">
+                                                <dt class="pf-v6-c-description-list__term">Status</dt>
+                                                <dd class="pf-v6-c-description-list__description">
+                                                    <span id="session-status" class="pf-v6-c-label pf-c-label">
+                                                        <span class="pf-v6-c-label__content pf-c-label__content">--</span>
+                                                    </span>
+                                                </dd>
+                                            </div>
+                                        </dl>
+                                    </div>
+                                    <div class="pf-v6-l-grid__item pf-m-12-col pf-m-8-col-on-lg">
+                                        <div class="pf-v6-l-split pf-m-gutter session-stats">
+                                            <div class="pf-v6-c-card pf-c-card pf-m-flat stat-card">
+                                                <div class="pf-v6-c-card__title pf-c-card__title">Total laps</div>
+                                                <div class="pf-v6-c-card__body pf-c-card__body stat-value" id="total-laps">-</div>
+                                            </div>
+                                            <div class="pf-v6-c-card pf-c-card pf-m-flat stat-card">
+                                                <div class="pf-v6-c-card__title pf-c-card__title">Best lap</div>
+                                                <div class="pf-v6-c-card__body pf-c-card__body stat-value" id="best-lap">-</div>
+                                            </div>
+                                            <div class="pf-v6-c-card pf-c-card pf-m-flat stat-card">
+                                                <div class="pf-v6-c-card__title pf-c-card__title">Average lap</div>
+                                                <div class="pf-v6-c-card__body pf-c-card__body stat-value" id="avg-lap">-</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pf-v6-l-grid__item pf-m-12-col">
+                                        <section class="pf-v6-c-card pf-c-card pf-m-flat lap-times-card">
+                                            <header class="pf-v6-c-card__header pf-c-card__header">
+                                                <h2 class="pf-v6-c-title pf-m-md">Lap times</h2>
+                                            </header>
+                                            <div class="pf-v6-c-card__body pf-c-card__body">
+                                                <div id="lap-times-list">
+                                                    <div class="pf-v6-c-empty-state pf-m-sm">
+                                                        <div class="pf-v6-c-empty-state__content">
+                                                            <h3 class="pf-v6-c-title pf-m-md">Loading lap times...</h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Channel Change Modal -->
+                <div id="channel-modal" class="pf-v6-c-backdrop pf-c-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="channel-modal-title">
+                    <div class="pf-v6-l-bullseye pf-l-bullseye">
+                        <div class="pf-v6-c-modal-box pf-c-modal-box" role="document">
+                            <button class="pf-v6-c-button pf-c-button pf-m-plain modal-close channel-close" type="button" aria-label="Close channel modal">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <header class="pf-v6-c-modal-box__header pf-c-modal-box__header">
+                                <h1 id="channel-modal-title" class="pf-v6-c-modal-box__title pf-c-modal-box__title">Quick Channel Change</h1>
+                            </header>
+                            <div class="pf-v6-c-modal-box__body pf-c-modal-box__body">
+                                <form id="channel-change-form" class="pf-v6-c-form pf-c-form">
+                                    <p class="pf-v6-c-content pf-m-sm pf-v6-u-mb-md">
+                                        Change the WiFi channel for device <strong id="channel-device-name">--</strong>
+                                    </p>
+                                    <div class="pf-v6-c-form__group pf-c-form__group">
+                                        <label class="pf-v6-c-form__label pf-c-form__label" for="channel-input">
+                                            <span class="pf-v6-c-form__label-text">WiFi Channel</span>
+                                            <span class="pf-v6-c-form__label-required" aria-hidden="true">*</span>
+                                        </label>
+                                        <div class="pf-v6-c-form__control pf-c-form__control">
+                                            <input type="number" id="channel-input" class="pf-v6-c-form-control pf-c-form-control" min="1" max="200" required>
+                                        </div>
+                                        <p class="pf-v6-c-form__helper-text">
+                                            <span class="pf-v6-c-form__helper-text-icon">
+                                                <i class="pf-icon pf-icon-info-circle" aria-hidden="true"></i>
+                                            </span>
+                                            Valid range: 1-200 (5.8GHz channels)
+                                        </p>
+                                    </div>
+                                    <footer class="pf-v6-c-modal-box__footer pf-c-modal-box__footer">
+                                        <button type="submit" class="pf-v6-c-button pf-c-button pf-m-primary">Change Channel</button>
+                                        <button type="button" class="pf-v6-c-button pf-c-button pf-m-link channel-close">Cancel</button>
+                                    </footer>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Display Mode Switch Modal -->
+                <div id="display-mode-modal" class="pf-v6-c-backdrop pf-c-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="display-mode-modal-title">
+                    <div class="pf-v6-l-bullseye pf-l-bullseye">
+                        <div class="pf-v6-c-modal-box pf-c-modal-box" role="document">
+                            <button class="pf-v6-c-button pf-c-button pf-m-plain modal-close display-mode-close" type="button" aria-label="Close display mode modal">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <header class="pf-v6-c-modal-box__header pf-c-modal-box__header">
+                                <h1 id="display-mode-modal-title" class="pf-v6-c-modal-box__title pf-c-modal-box__title">Switch Display Mode</h1>
+                            </header>
+                            <div class="pf-v6-c-modal-box__body pf-c-modal-box__body">
+                                <form id="display-mode-form" class="pf-v6-c-form pf-c-form">
+                                    <p class="pf-v6-c-content pf-m-sm pf-v6-u-mb-md">
+                                        Change display mode for device <strong id="display-mode-device-name">--</strong>
+                                    </p>
+                                    <div class="pf-v6-c-form__group pf-c-form__group">
+                                        <label class="pf-v6-c-form__label pf-c-form__label">
+                                            <span class="pf-v6-c-form__label-text">Display Mode</span>
+                                            <span class="pf-v6-c-form__label-required" aria-hidden="true">*</span>
+                                        </label>
+                                        <div class="pf-v6-c-form__group-control">
+                                            <div class="pf-v6-c-radio">
+                                                <input class="pf-v6-c-radio__input" type="radio" id="display-mode-flat" name="display-mode" value="flat" required>
+                                                <label class="pf-v6-c-radio__label" for="display-mode-flat">Flat Screen</label>
+                                                <span class="pf-v6-c-radio__description">Standard flat projection for 2D viewing</span>
+                                            </div>
+                                            <div class="pf-v6-c-radio pf-v6-u-mt-sm">
+                                                <input class="pf-v6-c-radio__input" type="radio" id="display-mode-curved" name="display-mode" value="curved" required>
+                                                <label class="pf-v6-c-radio__label" for="display-mode-curved">Curved Screen</label>
+                                                <span class="pf-v6-c-radio__description">Immersive curved projection for VR experience</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <footer class="pf-v6-c-modal-box__footer pf-c-modal-box__footer">
+                                        <button type="submit" class="pf-v6-c-button pf-c-button pf-m-primary">Switch Mode</button>
+                                        <button type="button" class="pf-v6-c-button pf-c-button pf-m-link display-mode-close">Cancel</button>
+                                    </footer>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Start Session Modal -->
+                <div id="start-session-modal" class="pf-v6-c-backdrop pf-c-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="start-session-modal-title">
+                    <div class="pf-v6-l-bullseye pf-l-bullseye">
+                        <div class="pf-v6-c-modal-box pf-c-modal-box" role="document">
+                            <button class="pf-v6-c-button pf-c-button pf-m-plain modal-close start-session-close" type="button" aria-label="Close start session modal">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <header class="pf-v6-c-modal-box__header pf-c-modal-box__header">
+                                <h1 id="start-session-modal-title" class="pf-v6-c-modal-box__title pf-c-modal-box__title">Start Session</h1>
+                            </header>
+                            <div class="pf-v6-c-modal-box__body pf-c-modal-box__body">
+                                <form id="start-session-form" class="pf-v6-c-form pf-c-form">
+                                    <p class="pf-v6-c-content pf-m-sm pf-v6-u-mb-md">
+                                        Start a new session for device <strong id="start-session-device-name">--</strong>
+                                    </p>
+                                    <div class="pf-v6-c-form__group pf-c-form__group">
+                                        <label class="pf-v6-c-form__label pf-c-form__label" for="session-duration">
+                                            <span class="pf-v6-c-form__label-text">Session Duration</span>
+                                            <span class="pf-v6-c-form__label-required" aria-hidden="true">*</span>
+                                        </label>
+                                        <div class="pf-v6-c-form__control pf-c-form__control">
+                                            <select id="session-duration" class="pf-v6-c-form-control pf-c-form-control" required>
+                                                <option value="">Select duration...</option>
+                                                <option value="300">5 minutes</option>
+                                                <option value="600">10 minutes</option>
+                                                <option value="900">15 minutes</option>
+                                                <option value="1200">20 minutes</option>
+                                                <option value="1800">30 minutes</option>
+                                                <option value="3600">60 minutes</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <footer class="pf-v6-c-modal-box__footer pf-c-modal-box__footer">
+                                        <button type="submit" class="pf-v6-c-button pf-c-button pf-m-primary">Start Session</button>
+                                        <button type="button" class="pf-v6-c-button pf-c-button pf-m-link start-session-close">Cancel</button>
+                                    </footer>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="session-manager.js"></script>
+    <script src="app.js"></script>
+    <script src="app_init.js"></script>
+</body>
+</html>

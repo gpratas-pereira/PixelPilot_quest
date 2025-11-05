@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(adb connect:*)",
+      "Bash(adb:*)",
+      "Bash(.\\gradlew.bat clean:*)",
+      "Bash(grep:*)",
+      "Bash(npm start)",
+      "Bash(node server.js)",
+      "Bash(node:*)",
+      "Bash(curl:*)",
+      "Bash(rm:*)"
+    ],
+    "deny": []
+  }
+}

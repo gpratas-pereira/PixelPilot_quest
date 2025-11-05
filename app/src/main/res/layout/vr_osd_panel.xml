@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#80000000"
+    android:padding="16dp">
+
+    <!-- Flight Data Section -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FLIGHT DATA"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Altitude -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
+        
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/alt"
+            android:layout_marginEnd="8dp" />
+        
+        <TextView
+            android:id="@+id/vr_altitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ALT: 0 m"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <!-- Ground Speed -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
+        
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/gnd_speed"
+            android:layout_marginEnd="8dp" />
+        
+        <TextView
+            android:id="@+id/vr_ground_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SPD: 0 km/h"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <!-- Battery -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
+        
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/battery"
+            android:layout_marginEnd="8dp" />
+        
+        <TextView
+            android:id="@+id/vr_battery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BAT: 0.0V"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <!-- GPS Satellites -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
+        
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/sat1"
+            android:layout_marginEnd="8dp" />
+        
+        <TextView
+            android:id="@+id/vr_satellites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SAT: 0"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <!-- Distance to Home -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+        
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/home"
+            android:layout_marginEnd="8dp" />
+        
+        <TextView
+            android:id="@+id/vr_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DIST: 0 m"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <!-- Link Quality Section -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LINK QUALITY"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Link Status Chart -->
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/vr_link_chart"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Link Statistics -->
+    <TextView
+        android:id="@+id/vr_link_stats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="O:0 D:0 R:0 L:0"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Video Stats Section -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="VIDEO"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/vr_video_stats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0x0@0fps H264 0Mbps 0ms"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp" />
+
+</LinearLayout>

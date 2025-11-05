@@ -1,0 +1,18 @@
+-- Merging decision tree log ---
+manifest
+ADDED from D:\Source\Repos\PixelPilot_quest\app\xr\src\main\AndroidManifest.xml:1:1-4:12
+INJECTED from D:\Source\Repos\PixelPilot_quest\app\xr\src\main\AndroidManifest.xml:1:1-4:12
+	package
+		INJECTED from D:\Source\Repos\PixelPilot_quest\app\xr\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from D:\Source\Repos\PixelPilot_quest\app\xr\src\main\AndroidManifest.xml:1:11-69
+application
+ADDED from D:\Source\Repos\PixelPilot_quest\app\xr\src\main\AndroidManifest.xml:2:5-3:19
+uses-sdk
+INJECTED from D:\Source\Repos\PixelPilot_quest\app\xr\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from D:\Source\Repos\PixelPilot_quest\app\xr\src\main\AndroidManifest.xml
+INJECTED from D:\Source\Repos\PixelPilot_quest\app\xr\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from D:\Source\Repos\PixelPilot_quest\app\xr\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from D:\Source\Repos\PixelPilot_quest\app\xr\src\main\AndroidManifest.xml

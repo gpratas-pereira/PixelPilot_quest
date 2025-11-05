@@ -42,6 +42,12 @@ android {
     }
     buildToolsVersion '35.0.0'
     ndkVersion '26.1.10909125'
+
+    sourceSets {
+        getByName("main") {
+            assets.srcDirs += "sfx"
+        }
+    }
 }
 
 dependencies {
@@ -52,4 +58,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.philjay.mpandroidchart)
+    implementation(project(":app:xr"))
+
+
 }

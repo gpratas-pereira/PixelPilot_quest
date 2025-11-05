@@ -1,0 +1,827 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rewards Management - FPVue Admin</title>
+    
+    <link rel="stylesheet" href="/patternfly/patternfly.min.css">
+    <link rel="stylesheet" href="/patternfly/patternfly-addons.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="pf-m-redhat-font">
+    <div id="notification-container" class="pf-v6-c-alert-group pf-m-toast" aria-live="polite" aria-atomic="true"></div>
+
+    <div class="pf-v6-c-page">
+        <header class="pf-v6-c-masthead pf-m-dark">
+            <div class="pf-v6-c-masthead__main">
+                <div class="pf-v6-c-masthead__brand">
+                    <a class="pf-v6-c-masthead__brand-link" href="index.html">
+                         <img src="https://vsqxljjsdaatrdvljost.supabase.co/storage/v1/object/public/images/Global%20FPV%20Arena%20Logo.webp" alt="Global FPV Arena" class="pf-v6-c-brand" style="height: 100px; width: auto;">
+                    </a>
+                </div>
+            </div>
+            <div class="pf-v6-c-masthead__content">
+                <div class="pf-v6-c-toolbar pf-m-static">
+                    <div class="pf-v6-c-toolbar__content">
+                        <div class="pf-v6-c-toolbar__item pf-m-align-right">
+                            <!-- User Avatar Dropdown -->
+                            <div id="user-avatar-dropdown" class="pf-v6-c-menu hidden" data-required-group="rewards_admin">
+                                <button class="pf-v6-c-menu__toggle pf-m-plain" type="button" id="user-avatar-toggle" aria-expanded="false" aria-haspopup="true" style="border: none;background-color: white;">
+                                    <div class="pf-v6-c-avatar pf-m-md">
+                                        <img id="header-user-avatar" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNGNEY0RjQiLz4KPGNpcmNsZSBjeD0iMjAiIGN5PSIxNiIgcj0iNiIgZmlsbD0iIzZBNkE2QSIvPgo8cGF0aCBkPSJNOCAzMkM4IDI1LjM3MjYgMTMuMzcyNiAyMCAyMCAyMEMyNi42Mjc0IDIwIDMyIDI1LjM3MjYgMzIgMzJIMzBDMzAgMjYuNDc3MSAyNS41MjI5IDIyIDIwIDIyQzE0LjQ3NzEgMjIgMTAgMjYuNDc3MSAxMCAzMkg4WiIgZmlsbD0iIzZBNkE2QSIvPgo8L3N2Zz4K" alt="User avatar" />
+                                    </div>
+                                    <span class="pf-v6-u-ml-sm pf-v6-u-color-light-100" id="header-user-name">Admin</span>
+                                    <span class="pf-v6-c-menu__toggle-icon pf-v6-u-ml-sm">
+                                        <i class="fas fa-caret-down pf-v6-u-color-light-100" aria-hidden="true"></i>
+                                    </span>
+                                </button>
+                                <div class="pf-v6-c-menu__content">
+                                    <ul class="pf-v6-c-menu__list" hidden>
+                                        <li class="pf-v6-c-menu__list-item">
+                                            <button class="pf-v6-c-menu__item" type="button" id="header-logout-btn">
+                                                <span class="pf-v6-c-menu__item-main">
+                                                    <i class="fas fa-sign-out-alt pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                                    Sign out
+                                                </span>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="pf-v6-c-page__sidebar pf-m-dark">
+            <div class="pf-v6-c-page__sidebar-body">
+                <nav class="pf-v6-c-nav">
+                    <ul class="pf-v6-c-nav__list">
+                        <li class="pf-v6-c-nav__item" data-required-group="ops">
+                            <a class="pf-v6-c-nav__link" href="index.html">Device Management</a>
+                        </li>
+                        <li class="pf-v6-c-nav__item" data-required-group="pitlane">
+                            <a class="pf-v6-c-nav__link" href="admin.html">Pitlane Management</a>
+                        </li>
+                        <li class="pf-v6-c-nav__item" data-required-group="rewards_admin">
+                            <a class="pf-v6-c-nav__link pf-m-current" href="rewards-admin.html" aria-current="page">Rewards Management</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <main class="pf-v6-c-page__main" tabindex="-1">
+            <!-- Authentication Card -->
+            <div id="admin-auth-card" class="pf-v6-c-page__main-section pf-v6-u-p-xl">
+                <div class="pf-v6-l-bullseye">
+                    <div class="pf-v6-c-card pf-m-plain" style="max-width: 500px;">
+                        <div class="pf-v6-c-card__header">
+                            <div class="pf-v6-c-card__title">
+                                <h2 class="pf-v6-c-title pf-m-2xl">Admin Authentication</h2>
+                            </div>
+                        </div>
+                        <div class="pf-v6-c-card__body">
+                            <form id="admin-login-form" class="pf-v6-c-form">
+                                <div class="pf-v6-c-form__group">
+                                    <label class="pf-v6-c-form__label" for="admin-login-email">
+                                        <span class="pf-v6-c-form__label-text">E-mail</span>
+                                    </label>
+                                    <input type="email" id="admin-login-email" class="pf-v6-c-form-control" required>
+                                </div>
+                                <div class="pf-v6-c-form__group">
+                                    <label class="pf-v6-c-form__label" for="admin-login-password">
+                                        <span class="pf-v6-c-form__label-text">Password</span>
+                                    </label>
+                                    <input type="password" id="admin-login-password" class="pf-v6-c-form-control" required>
+                                </div>
+                                <div class="pf-v6-c-form__actions">
+                                    <button type="submit" class="pf-v6-c-button pf-m-primary pf-m-block">Sign in</button>
+                                </div>
+                            </form>
+                            <div id="admin-auth-alert" class="pf-v6-c-alert pf-m-inline hidden pf-v6-u-mt-md"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div id="admin-content" class="hidden" data-required-group="rewards_admin">
+                <section class="pf-v6-c-page__main-section pf-m-light pf-v6-u-px-lg pf-v6-u-pt-lg pf-v6-u-pb-md">
+                    <div class="pf-v6-c-content">
+                        <h1 class="pf-v6-c-title pf-m-2xl">Rewards System Management</h1>
+                        <p class="pf-v6-c-content pf-m-md">
+                            Manage marketplace items, achievements, point rules, and pilot rewards.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Tabs -->
+                <section class="pf-v6-c-page__main-section pf-v6-u-px-lg pf-v6-u-pt-md">
+                    <div class="pf-v6-c-tabs pf-m-box">
+                        <ul class="pf-v6-c-tabs__list">
+                            <li class="pf-v6-c-tabs__item pf-m-current">
+                                <button class="pf-v6-c-tabs__link" data-tab="items">
+                                    <span class="pf-v6-c-tabs__item-text">Marketplace Items</span>
+                                </button>
+                            </li>
+                            <li class="pf-v6-c-tabs__item">
+                                <button class="pf-v6-c-tabs__link" data-tab="achievements">
+                                    <span class="pf-v6-c-tabs__item-text">Achievements</span>
+                                </button>
+                            </li>
+                            <li class="pf-v6-c-tabs__item">
+                                <button class="pf-v6-c-tabs__link" data-tab="vehicles">
+                                    <span class="pf-v6-c-tabs__item-text">Vehicles</span>
+                                </button>
+                            </li>
+                            <li class="pf-v6-c-tabs__item">
+                                <button class="pf-v6-c-tabs__link" data-tab="rules">
+                                    <span class="pf-v6-c-tabs__item-text">Point Rules</span>
+                                </button>
+                            </li>
+                            <li class="pf-v6-c-tabs__item">
+                                <button class="pf-v6-c-tabs__link" data-tab="pilots">
+                                    <span class="pf-v6-c-tabs__item-text">Pilot Points</span>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Tab Content -->
+                <section class="pf-v6-c-page__main-section pf-v6-u-px-lg pf-v6-u-pb-xl">
+                    <!-- Marketplace Items Tab -->
+                    <div id="tab-items" class="admin-tab-content">
+                        <div class="pf-v6-c-toolbar pf-v6-u-mb-md">
+                            <div class="pf-v6-c-toolbar__content">
+                                <div class="pf-v6-c-toolbar__item">
+                                    <button type="button" class="pf-v6-c-button pf-m-primary" id="add-item-btn">
+                                        <i class="pf-icon pf-icon-add-circle-o" aria-hidden="true"></i>
+                                        Add Item
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="items-table-container">
+                            <table class="pf-v6-c-table pf-m-grid-md pf-m-compact" role="grid" aria-label="Marketplace Items">
+                                <thead class="pf-v6-c-table__thead">
+                                    <tr class="pf-v6-c-table__tr" role="row">
+                                        <th class="pf-v6-c-table__th pf-m-width-20" role="columnheader" scope="col">Name</th>
+                                        <th class="pf-v6-c-table__th pf-m-width-15" role="columnheader" scope="col">Type</th>
+                                        <th class="pf-v6-c-table__th pf-m-width-15" role="columnheader" scope="col">Price (Points)</th>
+                                        <th class="pf-v6-c-table__th pf-m-width-15" role="columnheader" scope="col">Price (USDT)</th>
+                                        <th class="pf-v6-c-table__th pf-m-width-10" role="columnheader" scope="col">Stock</th>
+                                        <th class="pf-v6-c-table__th pf-m-width-10" role="columnheader" scope="col">Status</th>
+                                        <th class="pf-v6-c-table__th pf-m-width-15" role="columnheader" scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="items-table-body" class="pf-v6-c-table__tbody" role="rowgroup">
+                                    <tr class="pf-v6-c-table__tr" role="row">
+                                        <td colspan="7" class="pf-v6-c-table__td pf-v6-u-text-align-center pf-v6-u-py-xl">
+                                            <div class="pf-v6-c-spinner pf-m-lg" role="progressbar" aria-label="Loading marketplace items">
+                                                <span class="pf-v6-c-spinner__clipper"></span>
+                                                <span class="pf-v6-c-spinner__lead-ball"></span>
+                                                <span class="pf-v6-c-spinner__tail-ball"></span>
+                                            </div>
+                                            <div class="pf-v6-u-mt-sm">Loading marketplace items...</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Achievements Tab -->
+                    <div id="tab-achievements" class="admin-tab-content hidden">
+                        <div class="pf-v6-c-toolbar pf-v6-u-mb-md">
+                            <div class="pf-v6-c-toolbar__content">
+                                <div class="pf-v6-c-toolbar__item">
+                                    <button type="button" class="pf-v6-c-button pf-m-primary" id="add-achievement-btn">
+                                        <i class="pf-icon pf-icon-add-circle-o" aria-hidden="true"></i>
+                                        Add Achievement
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="achievements-table-container">
+                            <table class="pf-v6-c-table pf-m-grid-md" role="grid" aria-label="Achievements">
+                                <thead class="pf-v6-c-table__thead">
+                                    <tr class="pf-v6-c-table__tr" role="row">
+                                        <th class="pf-v6-c-table__th pf-m-width-20" role="columnheader" scope="col" tabindex="0" aria-sort="none">Name</th>
+                                        <th class="pf-v6-c-table__th pf-m-width-25" role="columnheader" scope="col">Description</th>
+                                        <th class="pf-v6-c-table__th pf-m-width-10" role="columnheader" scope="col">Points Reward</th>
+                                        <th class="pf-v6-c-table__th pf-m-width-15" role="columnheader" scope="col">Unlock Item</th>
+                                        <th class="pf-v6-c-table__th pf-m-width-15" role="columnheader" scope="col">Requirement</th>
+                                        <th class="pf-v6-c-table__th pf-m-width-15" role="columnheader" scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="achievements-table-body" class="pf-v6-c-table__tbody" role="rowgroup">
+                                    <tr class="pf-v6-c-table__tr" role="row">
+                                        <td colspan="6" class="pf-v6-c-table__td pf-v6-u-text-align-center pf-v6-u-py-xl">
+                                            <div class="pf-v6-c-spinner pf-m-lg" role="progressbar" aria-label="Loading achievements">
+                                                <span class="pf-v6-c-spinner__clipper"></span>
+                                                <span class="pf-v6-c-spinner__lead-ball"></span>
+                                                <span class="pf-v6-c-spinner__tail-ball"></span>
+                                            </div>
+                                            <div class="pf-v6-u-mt-sm">Loading achievements...</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Vehicles Tab -->
+                    <div id="tab-vehicles" class="admin-tab-content hidden">
+                        <div class="pf-v6-c-toolbar pf-v6-u-mb-md">
+                            <div class="pf-v6-c-toolbar__content">
+                                <div class="pf-v6-c-toolbar__item">
+                                    <button type="button" class="pf-v6-c-button pf-m-primary" id="add-vehicle-btn">
+                                        <i class="pf-icon pf-icon-add-circle-o" aria-hidden="true"></i>
+                                        Add Vehicle
+                                    </button>
+                                </div>
+                                <div class="pf-v6-c-toolbar__item pf-v6-u-ml-md">
+                                    <label class="pf-v6-c-form__label pf-v6-u-sr-only" for="vehicle-search">
+                                        <span class="pf-v6-c-form__label-text">Search Vehicles</span>
+                                    </label>
+                                    <input type="search" id="vehicle-search" class="pf-v6-c-form-control" placeholder="Search vehicles...">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="vehicles-alert" class="pf-v6-c-alert pf-m-inline hidden" role="alert"></div>
+                        <div class="data-table-wrapper">
+                            <table class="pf-v6-c-table pf-m-grid-md pf-m-compact" role="grid">
+                                <thead class="pf-v6-c-table__thead">
+                                    <tr class="pf-v6-c-table__tr">
+                                        <th scope="col" class="pf-v6-c-table__th">Vehicle ID</th>
+                                        <th scope="col" class="pf-v6-c-table__th">Name</th>
+                                        <th scope="col" class="pf-v6-c-table__th">Type</th>
+                                        <th scope="col" class="pf-v6-c-table__th">Metadata</th>
+                                        <th scope="col" class="pf-v6-c-table__th">Updated</th>
+                                        <th scope="col" class="pf-v6-c-table__th">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="vehicles-table-body" class="pf-v6-c-table__tbody">
+                                    <tr class="pf-v6-c-table__tr">
+                                        <td colspan="6" class="pf-v6-c-table__th pf-v6-u-text-align-center">No vehicles found</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="pf-v6-c-content pf-m-sm pf-v6-u-mt-md" id="vehicles-summary"></p>
+                    </div>
+
+                    <!-- Point Rules Tab -->
+                    <div id="tab-rules" class="admin-tab-content hidden">
+                        <div class="pf-v6-c-toolbar pf-v6-u-mb-md">
+                            <div class="pf-v6-c-toolbar__content">
+                                <div class="pf-v6-c-toolbar__item">
+                                    <button type="button" class="pf-v6-c-button pf-m-primary" id="add-rule-btn">
+                                        <i class="pf-icon pf-icon-add-circle-o" aria-hidden="true"></i>
+                                        Add Rule
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="rules-table-container">
+                            <table class="pf-v6-c-table pf-m-grid-md">
+                                <thead class="pf-v6-c-table__thead">
+                                    <tr class="pf-v6-c-table__tr">
+                                        <th class="pf-v6-c-table__th">Event</th>
+                                        <th class="pf-v6-c-table__th">Description</th>
+                                        <th class="pf-v6-c-table__th">Points</th>
+                                        <th class="pf-v6-c-table__th">Active</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rules-table-body">
+                                    <tr class="pf-v6-c-table__tr">
+                                        <td colspan="5" class="pf-v6-c-table__th pf-v6-u-text-align-center">Loading...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Pilot Points Tab -->
+                    <div id="tab-pilots" class="admin-tab-content hidden">
+                        <div class="pf-v6-c-toolbar pf-v6-u-mb-md">
+                            <div class="pf-v6-c-toolbar__content">
+                                <div class="pf-v6-c-toolbar__item">
+                                    <button type="button" class="pf-v6-c-button pf-m-primary" id="award-points-btn">
+                                        <i class="pf-icon pf-icon-gift" aria-hidden="true"></i>
+                                        Award Points
+                                    </button>
+                                </div>
+                                <div class="pf-v6-c-toolbar__item pf-m-search-filter">
+                                    <input type="search" id="pilot-search" class="pf-v6-c-form-control" placeholder="Search pilots...">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="pilots-table-container">
+                            <table class="pf-v6-c-table pf-m-grid-md">
+                                <thead class="pf-v6-c-table__thead">
+                                    <tr class="pf-v6-c-table__tr">
+                                        <th class="pf-v6-c-table__th">Pilot Name</th>
+                                        <th class="pf-v6-c-table__th">Email</th>
+                                        <th class="pf-v6-c-table__th">Current Points</th>
+                                        <th class="pf-v6-c-table__th">Lifetime Earned</th>
+                                        <th>Total Spent</th>
+                                        <th>Vehicle ID</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pilots-table-body">
+                                    <tr class="pf-v6-c-table__tr">
+                                        <td colspan="7" class="pf-v6-c-table__th pf-v6-u-text-align-center">Loading...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Item Modal -->
+    <div id="item-modal" class="pf-v6-c-backdrop hidden">
+        <div class="pf-v6-l-bullseye">
+            <div class="pf-v6-c-modal-box">
+                <button class="pf-v6-c-button pf-m-plain modal-close item-close" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <header class="pf-v6-c-modal-box__header">
+                    <h1 class="pf-v6-c-modal-box__title" id="item-modal-title">Add Marketplace Item</h1>
+                </header>
+                <div class="pf-v6-c-modal-box__body">
+                    <form id="item-form" class="pf-v6-c-form">
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label" for="item-name">
+                                <span class="pf-v6-c-form__label-text">Item Name</span>
+                            </label>
+                            <input type="text" id="item-name" class="pf-v6-c-form-control" required>
+                        </div>
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label" for="item-description">
+                                <span class="pf-v6-c-form__label-text">Description</span>
+                            </label>
+                            <textarea id="item-description" class="pf-v6-c-form-control" rows="3"></textarea>
+                        </div>
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label">
+                                <span class="pf-v6-c-form__label-text">Item Photo</span>
+                            </label>
+                            <div id="item-photo-upload"></div>
+                            <p class="pf-v6-c-form__helper-text">
+                                <span class="pf-v6-c-form__helper-text-icon">
+                                    <i class="pf-icon pf-icon-info-circle" aria-hidden="true"></i>
+                                </span>
+                                Upload a photo for this marketplace item (JPEG, PNG, WebP, max 10MB).
+                            </p>
+                        </div>
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label" for="item-type">
+                                <span class="pf-v6-c-form__label-text">Type</span>
+                            </label>
+                            <select id="item-type" class="pf-v6-c-form-control" required>
+                                <option value="">Select type...</option>
+                                <option value="vehicle">Vehicle</option>
+                                <option value="feature">Feature</option>
+                                <option value="cosmetic">Cosmetic</option>
+                                <option value="boost">Boost</option>
+                            </select>
+                        </div>
+                        <div class="pf-v6-c-form__group hidden" id="item-vehicle-group">
+                            <label class="pf-v6-c-form__label" for="item-vehicle-id">
+                                <span class="pf-v6-c-form__label-text">Vehicle</span>
+                            </label>
+                            <select id="item-vehicle-id" class="pf-v6-c-form-control">
+                                <option value="">Select a vehicle...</option>
+                            </select>
+                            <p class="pf-v6-c-form__helper-text">
+                                Choose from vehicles registered in the Vehicles tab.
+                            </p>
+                        </div>
+                        <div class="pf-v6-l-grid pf-m-gutter">
+                            <div class="pf-v6-l-grid__item pf-m-6-col">
+                                <div class="pf-v6-c-form__group">
+                                    <label class="pf-v6-c-form__label" for="item-points-price">
+                                        <span class="pf-v6-c-form__label-text">Price (Points)</span>
+                                    </label>
+                                    <input type="number" id="item-points-price" class="pf-v6-c-form-control" min="0">
+                                </div>
+                            </div>
+                            <div class="pf-v6-l-grid__item pf-m-6-col">
+                                <div class="pf-v6-c-form__group">
+                                    <label class="pf-v6-c-form__label" for="item-usdt-price">
+                                        <span class="pf-v6-c-form__label-text">Price (USDT)</span>
+                                    </label>
+                                    <input type="number" id="item-usdt-price" class="pf-v6-c-form-control" min="0" step="0.01">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label" for="item-stock">
+                                <span class="pf-v6-c-form__label-text">Stock (-1 for unlimited)</span>
+                            </label>
+                            <input type="number" id="item-stock" class="pf-v6-c-form-control" value="-1">
+                        </div>
+                        <div class="pf-v6-l-grid pf-m-gutter">
+                            <div class="pf-v6-l-grid__item pf-m-6-col">
+                                <div class="pf-v6-c-form__group">
+                                    <div class="pf-v6-c-check">
+                                        <input class="pf-v6-c-check__input" type="checkbox" id="item-active" checked>
+                                        <label class="pf-v6-c-check__label" for="item-active">Active (visible in marketplace)</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pf-v6-l-grid__item pf-m-6-col">
+                                <div class="pf-v6-c-form__group">
+                                    <div class="pf-v6-c-check">
+                                        <input class="pf-v6-c-check__input" type="checkbox" id="item-locked">
+                                        <label class="pf-v6-c-check__label" for="item-locked">
+                                            <span class="pf-v6-u-color-400">🔒</span> Locked (unavailable for purchase)
+                                        </label>
+                                    </div>
+                                    <div class="pf-v6-c-form__helper-text">
+                                        <div class="pf-v6-c-helper-text__item">
+                                            <span class="pf-v6-c-helper-text__item-text">When locked, item won't appear in public marketplace</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <footer class="pf-v6-c-modal-box__footer">
+                            <button type="submit" class="pf-v6-c-button pf-m-primary">Save Item</button>
+                            <button type="button" class="pf-v6-c-button pf-m-link item-close">Cancel</button>
+                        </footer>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Vehicle Modal -->
+    <div id="vehicle-modal" class="pf-v6-c-backdrop hidden">
+        <div class="pf-v6-l-bullseye">
+            <div class="pf-v6-c-modal-box">
+                <button class="pf-v6-c-button pf-m-plain modal-close vehicle-close" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <header class="pf-v6-c-modal-box__header">
+                    <h1 class="pf-v6-c-modal-box__title" id="vehicle-modal-title">Add Vehicle</h1>
+                </header>
+                <div class="pf-v6-c-modal-box__body">
+                    <form id="vehicle-form" class="pf-v6-c-form">
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label" for="vehicle-id">
+                                <span class="pf-v6-c-form__label-text">Vehicle ID</span>
+                                <span class="pf-v6-c-form__label-required" aria-hidden="true">*</span>
+                            </label>
+                            <input type="text" id="vehicle-id" class="pf-v6-c-form-control" required placeholder="Unique identifier, e.g., CAR-001">
+                            <p class="pf-v6-c-form__helper-text">
+                                Use letters, numbers, "-", "_", ":" or ".". This value cannot be changed after creation.
+                            </p>
+                        </div>
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label" for="vehicle-name">
+                                <span class="pf-v6-c-form__label-text">Display Name</span>
+                            </label>
+                            <input type="text" id="vehicle-name" class="pf-v6-c-form-control" placeholder="e.g., Skyline MKII Racer">
+                        </div>
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label" for="vehicle-type">
+                                <span class="pf-v6-c-form__label-text">Vehicle Type</span>
+                            </label>
+                            <input type="text" id="vehicle-type" class="pf-v6-c-form-control" placeholder="e.g., drone, car, simulator">
+                        </div>
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label" for="vehicle-metadata">
+                                <span class="pf-v6-c-form__label-text">Metadata (JSON)</span>
+                            </label>
+                            <textarea id="vehicle-metadata" class="pf-v6-c-form-control" rows="4" placeholder='{"top_speed":120,"acceleration":"3.2s"}'></textarea>
+                            <p class="pf-v6-c-form__helper-text">
+                                Optional JSON object for additional specs or media references.
+                            </p>
+                        </div>
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label">
+                                <span class="pf-v6-c-form__label-text">Vehicle Photo</span>
+                            </label>
+                            <div id="vehicle-photo-upload"></div>
+                            <p class="pf-v6-c-form__helper-text">
+                                <span class="pf-v6-c-form__helper-text-icon">
+                                    <i class="pf-icon pf-icon-info-circle" aria-hidden="true"></i>
+                                </span>
+                                Upload a photo of this vehicle (JPEG, PNG, WebP, max 8MB).
+                            </p>
+                        </div>
+                        <div id="vehicle-form-error" class="pf-v6-c-alert pf-m-inline pf-m-danger hidden" role="alert"></div>
+                        <footer class="pf-v6-c-modal-box__footer">
+                            <button type="submit" class="pf-v6-c-button pf-m-primary">Save Vehicle</button>
+                            <button type="button" class="pf-v6-c-button pf-m-link vehicle-close">Cancel</button>
+                        </footer>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Achievement Modal -->
+    <div id="achievement-modal" class="pf-v6-c-backdrop hidden">
+        <div class="pf-v6-l-bullseye">
+            <div class="pf-v6-c-modal-box">
+                <button class="pf-v6-c-button pf-m-plain modal-close achievement-close" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <header class="pf-v6-c-modal-box__header">
+                    <h1 class="pf-v6-c-modal-box__title" id="achievement-modal-title">Add Achievement</h1>
+                </header>
+                <div class="pf-v6-c-modal-box__body">
+                    <form id="achievement-form" class="pf-v6-c-form">
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label" for="achievement-name">
+                                <span class="pf-v6-c-form__label-text">Achievement Name</span>
+                                <span class="pf-v6-c-form__label-required" aria-hidden="true">*</span>
+                            </label>
+                            <input type="text" id="achievement-name" name="name" class="pf-v6-c-form-control" required>
+                        </div>
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label" for="achievement-description">
+                                <span class="pf-v6-c-form__label-text">Description</span>
+                            </label>
+                            <textarea id="achievement-description" name="description" class="pf-v6-c-form-control" rows="3"></textarea>
+                        </div>
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label" for="achievement-points">
+                                <span class="pf-v6-c-form__label-text">Points Reward</span>
+                            </label>
+                            <input type="number" id="achievement-points" name="points_reward" class="pf-v6-c-form-control" min="0" value="100">
+                        </div>
+                        <div class="pf-v6-l-grid pf-m-gutter">
+                            <div class="pf-v6-l-grid__item pf-m-6-col">
+                                <div class="pf-v6-c-form__group">
+                                    <label class="pf-v6-c-form__label" for="achievement-requirement-type">
+                                        <span class="pf-v6-c-form__label-text">Requirement Type</span>
+                                    </label>
+                                    <select id="achievement-requirement-type" name="requirement_type" class="pf-v6-c-form-control">
+                                        <option value="">Select requirement type...</option>
+                                        <option value="laps_completed">Laps Completed</option>
+                                        <option value="points_earned">Points Earned</option>
+                                        <option value="items_purchased">Items Purchased</option>
+                                        <option value="achievements_unlocked">Achievements Unlocked</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="pf-v6-l-grid__item pf-m-6-col">
+                                <div class="pf-v6-c-form__group">
+                                    <label class="pf-v6-c-form__label" for="achievement-requirement-value">
+                                        <span class="pf-v6-c-form__label-text">Requirement Value</span>
+                                    </label>
+                                    <input type="number" id="achievement-requirement-value" name="requirement_value" class="pf-v6-c-form-control" min="1" value="1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label" for="achievement-unlock-item">
+                                <span class="pf-v6-c-form__label-text">Unlock Item (Optional)</span>
+                            </label>
+                            <select id="achievement-unlock-item" name="unlock_item_id" class="pf-v6-c-form-control">
+                                <option value="">No item to unlock</option>
+                                <!-- Will be populated dynamically -->
+                            </select>
+                        </div>
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label" for="achievement-icon">
+                                <span class="pf-v6-c-form__label-text">Icon (Optional)</span>
+                            </label>
+                            <input type="text" id="achievement-icon" name="icon" class="pf-v6-c-form-control" placeholder="e.g., fa-trophy">
+                        </div>
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label" for="achievement-tier">
+                                <span class="pf-v6-c-form__label-text">Tier</span>
+                            </label>
+                            <select id="achievement-tier" name="tier" class="pf-v6-c-form-control">
+                                <option value="bronze">Bronze</option>
+                                <option value="silver">Silver</option>
+                                <option value="gold">Gold</option>
+                                <option value="platinum">Platinum</option>
+                            </select>
+                        </div>
+                        <div class="pf-v6-c-form__group">
+                            <div class="pf-v6-c-check">
+                                <input class="pf-v6-c-check__input" type="checkbox" id="achievement-is-active" name="is_active" checked>
+                                <label class="pf-v6-c-check__label" for="achievement-is-active">Active (visible to users)</label>
+                            </div>
+                        </div>
+                        <footer class="pf-v6-c-modal-box__footer">
+                            <button type="submit" class="pf-v6-c-button pf-m-primary">Save Achievement</button>
+                            <button type="button" class="pf-v6-c-button pf-m-link achievement-close">Cancel</button>
+                        </footer>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assign Achievement to Pilot Modal -->
+    <div id="assign-achievement-modal" class="pf-v6-c-backdrop hidden">
+        <div class="pf-v6-l-bullseye">
+            <div class="pf-v6-c-modal-box">
+                <button class="pf-v6-c-button pf-m-plain modal-close assign-achievement-close" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <header class="pf-v6-c-modal-box__header">
+                    <h1 class="pf-v6-c-modal-box__title" id="assign-achievement-modal-title">Assign Achievement to Pilot</h1>
+                </header>
+                <div class="pf-v6-c-modal-box__body">
+                    <form id="assign-achievement-form" class="pf-v6-c-form">
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label">
+                                <span class="pf-v6-c-form__label-text">Achievement</span>
+                            </label>
+                            <div class="pf-v6-c-content">
+                                <p id="assign-achievement-name" class="pf-v6-u-font-weight-bold"></p>
+                                <p id="assign-achievement-description" class="pf-v6-u-color-200"></p>
+                            </div>
+                        </div>
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label" for="assign-achievement-pilot">
+                                <span class="pf-v6-c-form__label-text">Select Pilot</span>
+                                <span class="pf-v6-c-form__label-required" aria-hidden="true">*</span>
+                            </label>
+                            <select id="assign-achievement-pilot" name="pilot_id" class="pf-v6-c-form-control" required>
+                                <option value="">Choose a pilot...</option>
+                                <!-- Will be populated dynamically -->
+                            </select>
+                        </div>
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label" for="assign-achievement-reason">
+                                <span class="pf-v6-c-form__label-text">Reason (Optional)</span>
+                            </label>
+                            <textarea id="assign-achievement-reason" name="reason" class="pf-v6-c-form-control" rows="2" placeholder="e.g., Manual achievement assignment by admin"></textarea>
+                        </div>
+                        <footer class="pf-v6-c-modal-box__footer">
+                            <button type="submit" class="pf-v6-c-button pf-m-primary">Assign Achievement</button>
+                            <button type="button" class="pf-v6-c-button pf-m-link assign-achievement-close">Cancel</button>
+                        </footer>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Point Rule Modal -->
+    <div id="point-rule-modal" class="pf-v6-c-backdrop hidden">
+        <div class="pf-v6-l-bullseye">
+            <div class="pf-v6-c-modal-box">
+                <button class="pf-v6-c-button pf-m-plain modal-close point-rule-close" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <header class="pf-v6-c-modal-box__header">
+                    <h1 id="point-rule-modal-title" class="pf-v6-c-title pf-m-2xl">Add Point Rule</h1>
+                </header>
+                <div class="pf-v6-c-modal-box__body">
+                    <form id="point-rule-form" class="pf-v6-c-form">
+                        <input type="hidden" id="point-rule-id">
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label" for="point-rule-event-type">
+                                <span class="pf-v6-c-form__label-text">Event Type</span>
+                                <span class="pf-v6-c-form__label-required" aria-hidden="true">*</span>
+                            </label>
+                            <input type="text" id="point-rule-event-type" class="pf-v6-c-form-control" required>
+                        </div>
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label" for="point-rule-description">
+                                <span class="pf-v6-c-form__label-text">Description</span>
+                            </label>
+                            <textarea id="point-rule-description" class="pf-v6-c-form-control" rows="3"></textarea>
+                        </div>
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label" for="point-rule-points">
+                                <span class="pf-v6-c-form__label-text">Points</span>
+                                <span class="pf-v6-c-form__label-required" aria-hidden="true">*</span>
+                            </label>
+                            <input type="number" id="point-rule-points" class="pf-v6-c-form-control" required min="1">
+                        </div>
+                        <div class="pf-v6-c-form__group">
+                            <div class="pf-v6-c-check">
+                                <input type="checkbox" id="point-rule-is-active" class="pf-v6-c-check__input" checked>
+                                <label class="pf-v6-c-check__label" for="point-rule-is-active">Active</label>
+                            </div>
+                        </div>
+                        <div class="pf-v6-c-form__group pf-m-action">
+                            <button type="submit" class="pf-v6-c-button pf-m-primary">Save</button>
+                            <button type="button" class="pf-v6-c-button pf-m-link point-rule-cancel">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Award Points Modal -->
+    <div id="award-points-modal" class="pf-v6-c-backdrop hidden">
+        <div class="pf-v6-l-bullseye">
+            <div class="pf-v6-c-modal-box">
+                <button class="pf-v6-c-button pf-m-plain modal-close award-points-close" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <header class="pf-v6-c-modal-box__header">
+                    <h1 class="pf-v6-c-modal-box__title">Award Points to Pilot</h1>
+                </header>
+                <div class="pf-v6-c-modal-box__body">
+                    <form id="award-points-form" class="pf-v6-c-form">
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label" for="award-pilot-select">
+                                <span class="pf-v6-c-form__label-text">Select Pilot</span>
+                            </label>
+                            <select id="award-pilot-select" class="pf-v6-c-form-control" required>
+                                <option value="">Choose a pilot...</option>
+                            </select>
+                        </div>
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label" for="award-points-amount">
+                                <span class="pf-v6-c-form__label-text">Points Amount</span>
+                            </label>
+                            <input type="number" id="award-points-amount" class="pf-v6-c-form-control" required>
+                        </div>
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label" for="award-reason">
+                                <span class="pf-v6-c-form__label-text">Reason</span>
+                            </label>
+                            <textarea id="award-reason" class="pf-v6-c-form-control" rows="2" required></textarea>
+                        </div>
+                        <footer class="pf-v6-c-modal-box__footer">
+                            <button type="submit" class="pf-v6-c-button pf-m-primary">Award Points</button>
+                            <button type="button" class="pf-v6-c-button pf-m-link award-points-close">Cancel</button>
+                        </footer>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assign Vehicle Modal -->
+    <div id="assign-vehicle-modal" class="pf-v6-c-backdrop hidden">
+        <div class="pf-v6-l-bullseye">
+            <div class="pf-v6-c-modal-box">
+                <button class="pf-v6-c-button pf-m-plain modal-close assign-vehicle-close" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <header class="pf-v6-c-modal-box__header">
+                    <h1 class="pf-v6-c-modal-box__title" id="assign-vehicle-modal-title">Assign Vehicle to Pilot</h1>
+                </header>
+                <div class="pf-v6-c-modal-box__body">
+                    <form id="assign-vehicle-form" class="pf-v6-c-form">
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label">
+                                <span class="pf-v6-c-form__label-text">Pilot</span>
+                            </label>
+                            <div class="pf-v6-c-form-control pf-m-readonly" id="assign-vehicle-pilot-name">
+                                Loading...
+                            </div>
+                        </div>
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label" for="assign-vehicle-id">
+                                <span class="pf-v6-c-form__label-text">Vehicle/Car Asset ID</span>
+                            </label>
+                            <input type="text" id="assign-vehicle-id" class="pf-v6-c-form-control" placeholder="e.g., CAR-001, DRONE-42" list="vehicle-id-options">
+                            <p class="pf-v6-c-form__helper-text">
+                                <span class="pf-v6-c-form__helper-text-icon">
+                                    <i class="pf-icon pf-icon-info-circle" aria-hidden="true"></i>
+                                </span>
+                                This ID links the pilot to the lap tracking system for automatic point awards.
+                            </p>
+                            <datalist id="vehicle-id-options"></datalist>
+                        </div>
+                        <div class="pf-v6-c-form__group">
+                            <label class="pf-v6-c-form__label">
+                                <span class="pf-v6-c-form__label-text">Current Assignment</span>
+                            </label>
+                            <div class="pf-v6-c-form-control pf-m-readonly" id="assign-vehicle-current">
+                                None
+                            </div>
+                        </div>
+                        <footer class="pf-v6-c-modal-box__footer">
+                            <button type="submit" class="pf-v6-c-button pf-m-primary">Assign Vehicle</button>
+                            <button type="button" class="pf-v6-c-button pf-m-link assign-vehicle-close">Cancel</button>
+                        </footer>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="session-manager.js"></script>
+    <script src="supabase-storage.js"></script>
+    <script src="patternfly-v6-bridge.js"></script>
+    <script src="rewards-admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FPVue Rewards & Marketplace</title>
+    <link rel="stylesheet" href="/patternfly/patternfly.min.css">
+    <link rel="stylesheet" href="/patternfly/patternfly-addons.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="pf-m-redhat-font">
+    <div id="notification-container" class="pf-v6-c-alert-group pf-m-toast" aria-live="polite" aria-atomic="true"></div>
+
+    <div class="pf-v6-c-page">
+        <header class="pf-v6-c-masthead pf-m-dark">
+            <div class="pf-v6-c-masthead__main">
+                <div class="pf-v6-c-masthead__brand">
+                    <a class="pf-v6-c-masthead__brand-link" href="index.html" aria-label="FPVue dashboard">
+                         <img src="https://vsqxljjsdaatrdvljost.supabase.co/storage/v1/object/public/images/Global%20FPV%20Arena%20Logo.webp" alt="Global FPV Arena" class="pf-v6-c-brand" style="height: 100px; width: auto;">
+                    </a>
+                </div>
+            </div>
+            <div class="pf-v6-c-masthead__content">
+                <div class="pf-v6-c-toolbar pf-m-static masthead-toolbar">
+                    <div class="pf-v6-c-toolbar__content">
+                        <div class="pf-v6-c-toolbar__item pf-m-align-right">
+                            <!-- User Avatar Dropdown -->
+                            <div id="user-avatar-dropdown" class="pf-v6-c-menu" data-required-group="pilot">
+                                <button class="pf-v6-c-menu__toggle pf-m-plain" type="button" id="user-avatar-toggle" aria-expanded="false" aria-haspopup="true" style="border: none;background-color: white;">
+                                    <div class="pf-v6-c-avatar pf-m-md">
+                                        <img id="header-user-avatar" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNGNEY0RjQiLz4KPGNpcmNsZSBjeD0iMjAiIGN5PSIxNiIgcj0iNiIgZmlsbD0iIzZBNkE2QSIvPgo8cGF0aCBkPSJNOCAzMkM4IDI1LjM3MjYgMTMuMzcyNiAyMCAyMCAyMEMyNi42Mjc0IDIwIDMyIDI1LjM3MjYgMzIgMzJIMzBDMzAgMjYuNDc3MSAyNS41MjI5IDIyIDIwIDIyQzE0LjQ3NzEgMjIgMTAgMjYuNDc3MSAxMCAzMkg4WiIgZmlsbD0iIzZBNkE2QSIvPgo8L3N2Zz4K" alt="User avatar" />
+                                    </div>
+                                    <span class="pf-v6-u-ml-sm pf-v6-u-color-light-100" id="header-user-name">Pilot</span>
+                                    <span class="pf-v6-c-menu__toggle-icon pf-v6-u-ml-sm">
+                                        <i class="fas fa-caret-down pf-v6-u-color-light-100" aria-hidden="true"></i>
+                                    </span>
+                                </button>
+                                <div class="pf-v6-c-menu__content">
+                                    <ul class="pf-v6-c-menu__list" hidden>
+                                        <li class="pf-v6-c-menu__list-item">
+                                            <button class="pf-v6-c-menu__item" type="button" id="header-logout-btn">
+                                                <span class="pf-v6-c-menu__item-main">
+                                                    <i class="fas fa-sign-out-alt pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                                    Sign out
+                                                </span>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="pf-v6-c-page__sidebar pf-m-dark">
+            <div class="pf-v6-c-page__sidebar-body">
+                <nav class="pf-v6-c-nav" aria-label="Page navigation">
+                    <ul class="pf-v6-c-nav__list">
+                        <li class="pf-v6-c-nav__item" data-required-group="pilot">
+                            <a class="pf-v6-c-nav__link" href="profile.html">Pilot Profile</a>
+                        </li>
+                        <li class="pf-v6-c-nav__item" data-required-group="pilot">
+                            <a class="pf-v6-c-nav__link  pf-m-current" href="rewards.html" aria-current="page">Rewards & Marketplace</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <main class="pf-v6-c-page__main" tabindex="-1">
+            <!-- Authentication Card -->
+            <div id="rewards-auth-card" class="pf-v6-c-page__main-section pf-v6-u-display-flex pf-v6-u-align-items-center pf-v6-u-justify-content-center" style="min-height: calc(100vh - 200px);">
+                <div class="pf-v6-c-login-main">
+                    <div class="pf-v6-c-login-main__body">
+                        <div class="pf-v6-c-login-main__header">
+                            <h1 class="pf-v6-c-title pf-m-3xl pf-v6-u-mb-sm">Sign in to FPVue</h1>
+                            <p class="pf-v6-u-mb-lg">Access your rewards, redeem points, and browse the marketplace</p>
+                        </div>
+                        <div class="pf-v6-c-login-main__form">
+                            <form id="rewards-login-form" class="pf-v6-c-form">
+                                <div class="pf-v6-c-form__group">
+                                    <label class="pf-v6-c-form__label" for="rewards-email">
+                                        <span class="pf-v6-c-form__label-text">Email</span>
+                                        <span class="pf-v6-c-form__label-required" aria-hidden="true">&#42;</span>
+                                    </label>
+                                    <input class="pf-v6-c-form-control" type="email" id="rewards-email" name="rewards-email" required>
+                                </div>
+                                <div class="pf-v6-c-form__group">
+                                    <label class="pf-v6-c-form__label" for="rewards-password">
+                                        <span class="pf-v6-c-form__label-text">Password</span>
+                                        <span class="pf-v6-c-form__label-required" aria-hidden="true">&#42;</span>
+                                    </label>
+                                    <input class="pf-v6-c-form-control" type="password" id="rewards-password" name="rewards-password" required>
+                                </div>
+                                <div class="pf-v6-c-form__group pf-m-action">
+                                    <button class="pf-v6-c-button pf-m-primary pf-m-block" type="submit">Sign in</button>
+                                </div>
+                            </form>
+                            <div id="rewards-auth-alert" class="pf-v6-c-alert pf-m-inline hidden pf-v6-u-mt-md"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content (Hidden until authenticated) -->
+            <div id="rewards-content" class="hidden" data-required-group="pilot">
+                <!-- Dashboard Header -->
+                <section class="pf-v6-c-page__main-section pf-m-no-padding pf-m-light">
+                    <div class="pf-v6-c-page__main-section pf-v6-u-pb-0">
+                        <div class="pf-v6-l-level">
+                            <div class="pf-v6-l-level__item">
+                                <div class="pf-v6-c-content">
+                                    <h1 class="pf-v6-c-title pf-m-2xl pf-v6-u-mb-sm">Rewards & Marketplace</h1>
+                                    <p class="pf-v6-c-content">
+                                        Earn points through racing achievements and redeem them for exclusive items, features, and vehicles.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Tabs Navigation -->
+                <section class="pf-v6-c-page__main-section pf-v6-u-px-lg pf-v6-u-pt-md">
+                    <div class="pf-v6-c-tabs pf-m-box" id="rewards-tabs">
+                        <ul class="pf-v6-c-tabs__list">
+                            <li class="pf-v6-c-tabs__item pf-m-current">
+                                <button class="pf-v6-c-tabs__link" data-tab="overview">
+                                    <span class="pf-v6-c-tabs__item-text">Overview</span>
+                                </button>
+                            </li>
+                            <li class="pf-v6-c-tabs__item">
+                                <button class="pf-v6-c-tabs__link" data-tab="marketplace">
+                                    <span class="pf-v6-c-tabs__item-text">Marketplace</span>
+                                </button>
+                            </li>
+                            <li class="pf-v6-c-tabs__item">
+                                <button class="pf-v6-c-tabs__link" data-tab="achievements">
+                                    <span class="pf-v6-c-tabs__item-text">Achievements</span>
+                                </button>
+                            </li>
+                            <li class="pf-v6-c-tabs__item">
+                                <button class="pf-v6-c-tabs__link" data-tab="purchases">
+                                    <span class="pf-v6-c-tabs__item-text">My Purchases</span>
+                                </button>
+                            </li>
+                            <li class="pf-v6-c-tabs__item">
+                                <button class="pf-v6-c-tabs__link" data-tab="wallet">
+                                    <span class="pf-v6-c-tabs__item-text">Wallet</span>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Tab Content -->
+                <section class="pf-v6-c-page__main-section pf-v6-u-px-lg pf-v6-u-pb-xl">
+                    <!-- Overview Tab -->
+                    <div id="tab-overview" class="rewards-tab-content">
+                        <!-- Dashboard Cards Row -->
+                        <div class="pf-v6-l-grid pf-m-gutter pf-v6-u-mb-lg">
+                            <!-- Points Summary Card -->
+                            <div class="pf-v6-l-grid__item pf-m-12-col pf-m-4-col-on-md">
+                                <div class="pf-v6-c-card pf-m-full-height">
+                                    <div class="pf-v6-c-card__title pf-v6-c-content">
+                                        <div class="pf-v6-l-flex pf-m-align-items-center">
+                                            <div class="pf-v6-l-flex__item">
+                                                <i class="pf-icon pf-icon-trophy pf-v6-u-font-size-lg pf-v6-u-color-gold" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="pf-v6-l-flex__item pf-m-flex-1">
+                                                <h2 class="pf-v6-c-title pf-m-lg pf-v6-u-mb-0">Your Points</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pf-v6-c-card__body">
+                                        <div class="pf-v6-u-text-align-center pf-v6-u-py-md">
+                                            <div class="pf-v6-u-font-size-4xl pf-v6-u-font-weight-bold pf-v6-u-primary-color-100" id="overview-points">0</div>
+                                            <div class="pf-v6-u-font-size-sm pf-v6-u-color-200">Available Points</div>
+                                        </div>
+                                    </div>
+                                    <div class="pf-v6-c-card__footer">
+                                        <dl class="pf-v6-c-description-list pf-m-horizontal-on-sm">
+                                            <div class="pf-v6-c-description-list__group">
+                                                <dt class="pf-v6-c-description-list__term">
+                                                    <span class="pf-v6-u-font-size-sm pf-v6-u-color-200">Earned</span>
+                                                </dt>
+                                                <dd class="pf-v6-c-description-list__description" id="lifetime-points">0</dd>
+                                            </div>
+                                            <div class="pf-v6-c-description-list__group">
+                                                <dt class="pf-v6-c-description-list__term">
+                                                    <span class="pf-v6-u-font-size-sm pf-v6-u-color-200">Spent</span>
+                                                </dt>
+                                                <dd class="pf-v6-c-description-list__description" id="spent-points">0</dd>
+                                            </div>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Quick Stats Cards -->
+                            <div class="pf-v6-l-grid__item pf-m-6-col pf-m-4-col-on-md">
+                                <div class="pf-v6-c-card pf-m-full-height">
+                                    <div class="pf-v6-c-card__title pf-v6-c-content">
+                                        <div class="pf-v6-l-flex pf-m-align-items-center">
+                                            <div class="pf-v6-l-flex__item">
+                                                <i class="fas fa-medal pf-v6-u-font-size-lg pf-v6-u-success-color-100" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="pf-v6-l-flex__item pf-m-flex-1">
+                                                <h3 class="pf-v6-c-title pf-m-md pf-v6-u-mb-0">Achievements</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pf-v6-c-card__body pf-v6-u-text-align-center">
+                                        <div class="pf-v6-u-font-size-2xl pf-v6-u-font-weight-bold" id="achievements-count">0</div>
+                                        <div class="pf-v6-u-font-size-sm pf-v6-u-color-200">Unlocked</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pf-v6-l-grid__item pf-m-6-col pf-m-4-col-on-md">
+                                <div class="pf-v6-c-card pf-m-full-height">
+                                    <div class="pf-v6-c-card__title pf-v6-c-content">
+                                        <div class="pf-v6-l-flex pf-m-align-items-center">
+                                            <div class="pf-v6-l-flex__item">
+                                                <i class="fas fa-shopping-bag pf-v6-u-font-size-lg pf-v6-u-info-color-100" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="pf-v6-l-flex__item pf-m-flex-1">
+                                                <h3 class="pf-v6-c-title pf-m-md pf-v6-u-mb-0">Purchases</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pf-v6-c-card__body pf-v6-u-text-align-center">
+                                        <div class="pf-v6-u-font-size-2xl pf-v6-u-font-weight-bold" id="purchases-count">0</div>
+                                        <div class="pf-v6-u-font-size-sm pf-v6-u-color-200">Items Owned</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Activity Feed -->
+                        <div class="pf-v6-l-grid pf-m-gutter">
+                            <div class="pf-v6-l-grid__item">
+                                <div class="pf-v6-c-card">
+                                    <div class="pf-v6-c-card__title pf-v6-c-content">
+                                        <div class="pf-v6-l-level">
+                                            <div class="pf-v6-l-level__item">
+                                                <h2 class="pf-v6-c-title pf-m-lg">Recent Activity</h2>
+                                            </div>
+                                            <div class="pf-v6-l-level__item">
+                                                <button class="pf-v6-c-button pf-m-link pf-m-small" id="refresh-activity-btn">
+                                                    <i class="fas fa-sync-alt pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                                    Refresh
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pf-v6-c-card__body">
+                                        <div id="recent-activity-list">
+                                            <div class="pf-v6-c-empty-state pf-m-sm">
+                                                <div class="pf-v6-c-empty-state__content">
+                                                    <div class="pf-v6-c-empty-state__icon">
+                                                        <i class="fas fa-clock pf-v6-u-color-200" aria-hidden="true"></i>
+                                                    </div>
+                                                    <h3 class="pf-v6-c-title pf-m-md">No recent activity</h3>
+                                                    <div class="pf-v6-c-empty-state__body">
+                                                        Complete achievements or make purchases to see activity here.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Marketplace Tab -->
+                    <div id="tab-marketplace" class="rewards-tab-content hidden">
+                        <div class="pf-v6-c-toolbar pf-v6-u-mb-md">
+                            <div class="pf-v6-c-toolbar__content">
+                                <div class="pf-v6-c-toolbar__item">
+                                    <div class="pf-v6-c-select">
+                                        <select id="marketplace-filter" class="pf-v6-c-form-control">
+                                            <option value="all">All Items</option>
+                                            <option value="tickets">Race Tickets</option>
+                                            <option value="vehicles">Vehicles</option>
+                                            <option value="features">Features</option>
+                                            <option value="cosmetics">Cosmetics</option>
+                                            <option value="boosts">Boosts</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="pf-v6-c-toolbar__item pf-m-search-filter">
+                                    <div class="pf-v6-c-input-group">
+                                        <input type="search" id="marketplace-search" class="pf-v6-c-form-control" placeholder="Search items...">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="marketplace-items" class="pf-v6-l-gallery pf-m-gutter">
+                            <!-- Items will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Achievements Tab -->
+                    <div id="tab-achievements" class="rewards-tab-content hidden">
+                        <div id="achievements-list" class="pf-v6-l-grid pf-m-gutter">
+                            <!-- Achievements will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Purchases Tab -->
+                    <div id="tab-purchases" class="rewards-tab-content hidden">
+                        <div class="pf-v6-c-toolbar pf-v6-u-mb-md">
+                            <div class="pf-v6-c-toolbar__content">
+                                <div class="pf-v6-c-toolbar__item">
+                                    <h2 class="pf-v6-c-title pf-m-lg">My Purchases</h2>
+                                </div>
+                                <div class="pf-v6-c-toolbar__item pf-m-align-right">
+                                    <button type="button" class="pf-v6-c-button pf-m-secondary" id="refresh-purchases-btn">
+                                        Refresh
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="purchases-list">
+                            <!-- Purchases will be loaded here -->
+                            <div class="pf-v6-c-empty-state pf-m-sm">
+                                <div class="pf-v6-c-empty-state__content">
+                                    <h3 class="pf-v6-c-title pf-m-md">No purchases yet</h3>
+                                    <p class="pf-v6-c-content">Visit the Marketplace to purchase items with your points!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Wallet Tab -->
+                    <div id="tab-wallet" class="rewards-tab-content hidden">
+                        <div class="pf-v6-l-grid pf-m-gutter">
+                            <div class="pf-v6-l-grid__item pf-m-12-col pf-m-6-col-on-lg">
+                                <div class="pf-v6-c-card pf-m-plain">
+                                    <div class="pf-v6-c-card__header">
+                                        <div class="pf-v6-c-card__title">
+                                            <h2 class="pf-v6-c-title pf-m-lg">USDT Wallet</h2>
+                                        </div>
+                                        <div class="pf-v6-c-card__actions">
+                                            <button type="button" class="pf-v6-c-button pf-m-secondary pf-m-small" id="refresh-wallet-btn">
+                                                Refresh Balance
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="pf-v6-c-card__body">
+                                        <dl class="pf-v6-c-description-list">
+                                            <div class="pf-v6-c-description-list__group">
+                                                <dt class="pf-v6-c-description-list__term">Balance</dt>
+                                                <dd class="pf-v6-c-description-list__description">
+                                                    <span class="pf-v6-u-font-size-2xl pf-v6-u-font-weight-bold" id="wallet-balance">0.00</span> USDT
+                                                </dd>
+                                            </div>
+                                            <div class="pf-v6-c-description-list__group">
+                                                <dt class="pf-v6-c-description-list__term">Wallet Address</dt>
+                                                <dd class="pf-v6-c-description-list__description">
+                                                    <code id="wallet-address">Not set</code>
+                                                </dd>
+                                            </div>
+                                        </dl>
+                                        <button type="button" class="pf-v6-c-button pf-m-primary pf-v6-u-mt-md" id="buy-points-btn">
+                                            Buy Points with USDT
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pf-v6-l-grid__item pf-m-12-col pf-m-6-col-on-lg">
+                                <div class="pf-v6-c-card pf-m-plain">
+                                    <div class="pf-v6-c-card__header">
+                                        <div class="pf-v6-c-card__title">
+                                            <h2 class="pf-v6-c-title pf-m-lg">Make Payment</h2>
+                                        </div>
+                                    </div>
+                                    <div class="pf-v6-c-card__body">
+                                        <form id="wallet-payment-form" class="pf-v6-c-form">
+                                            <div class="pf-v6-c-form__group">
+                                                <label class="pf-v6-c-form__label" for="payment-amount">
+                                                    <span class="pf-v6-c-form__label-text">Payment Amount (USDT)</span>
+                                                </label>
+                                                <input type="number" step="0.01" id="payment-amount" class="pf-v6-c-form-control" min="0" required>
+                                            </div>
+                                            <div class="pf-v6-c-form__group">
+                                                <label class="pf-v6-c-form__label" for="payment-transaction-hash">
+                                                    <span class="pf-v6-c-form__label-text">Transaction Hash</span>
+                                                </label>
+                                                <input type="text" id="payment-transaction-hash" class="pf-v6-c-form-control" placeholder="Blockchain transaction hash" required>
+                                                <p class="pf-v6-c-form__helper-text">
+                                                    Enter the transaction hash from your USDT payment for verification
+                                                </p>
+                                            </div>
+                                            <div class="pf-v6-c-form__group">
+                                                <label class="pf-v6-c-form__label" for="payment-description">
+                                                    <span class="pf-v6-c-form__label-text">Description (Optional)</span>
+                                                </label>
+                                                <input type="text" id="payment-description" class="pf-v6-c-form-control" placeholder="e.g. Wallet top-up">
+                                            </div>
+                                            <footer class="pf-v6-c-form__actions">
+                                                <button type="submit" class="pf-v6-c-button pf-m-primary">Submit Payment</button>
+                                            </footer>
+                                        </form>
+                                        <div id="payment-alert" class="pf-v6-c-alert pf-m-inline hidden pf-v6-u-mt-md"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pf-v6-l-grid__item pf-m-12-col">
+                                <div class="pf-v6-c-card">
+                                    <div class="pf-v6-c-card__title pf-v6-c-content">
+                                        <div class="pf-v6-l-level">
+                                            <div class="pf-v6-l-level__item">
+                                                <h2 class="pf-v6-c-title pf-m-lg">Recent Payments</h2>
+                                            </div>
+                                            <div class="pf-v6-l-level__item">
+                                                <button class="pf-v6-c-button pf-m-link pf-m-small" id="refresh-payments-btn">
+                                                    <i class="fas fa-sync-alt pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                                    Refresh
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pf-v6-c-card__body">
+                                        <div id="recent-payments-list">
+                                            <div class="pf-v6-c-empty-state pf-m-sm">
+                                                <div class="pf-v6-c-empty-state__content">
+                                                    <div class="pf-v6-c-empty-state__icon">
+                                                        <i class="fas fa-wallet pf-v6-u-color-200" aria-hidden="true"></i>
+                                                    </div>
+                                                    <h3 class="pf-v6-c-title pf-m-md">No payments yet</h3>
+                                                    <div class="pf-v6-c-empty-state__body">
+                                                        Submit a payment using a transaction hash to add funds to your wallet.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Purchase Item Modal -->
+    <div id="purchase-item-modal" class="pf-v6-c-backdrop pf-c-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="purchase-item-title">
+        <div class="pf-v6-l-bullseye pf-l-bullseye">
+            <div class="pf-v6-c-modal-box pf-c-modal-box" role="document">
+                <button class="pf-v6-c-button pf-c-button pf-m-plain modal-close purchase-item-close" type="button" aria-label="Close purchase modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <header class="pf-v6-c-modal-box__header pf-c-modal-box__header">
+                    <h1 class="pf-v6-c-modal-box__title pf-c-modal-box__title" id="purchase-item-title">Purchase Item</h1>
+                </header>
+                <div class="pf-v6-c-modal-box__body pf-c-modal-box__body">
+                    <div id="purchase-item-details"></div>
+                    <footer class="pf-v6-c-modal-box__footer pf-c-modal-box__footer">
+                        <button type="button" class="pf-v6-c-button pf-c-button pf-m-primary" id="confirm-purchase-btn">Confirm Purchase</button>
+                        <button type="button" class="pf-v6-c-button pf-c-button pf-m-link purchase-item-close">Cancel</button>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Buy Points Modal -->
+    <div id="buy-points-modal" class="pf-v6-c-backdrop pf-c-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="buy-points-modal-title">
+        <div class="pf-v6-l-bullseye pf-l-bullseye">
+            <div class="pf-v6-c-modal-box pf-c-modal-box" role="document">
+                <button class="pf-v6-c-button pf-c-button pf-m-plain modal-close buy-points-close" type="button" aria-label="Close buy points modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <header class="pf-v6-c-modal-box__header pf-c-modal-box__header">
+                    <h1 id="buy-points-modal-title" class="pf-v6-c-modal-box__title pf-c-modal-box__title">Buy Reward Points</h1>
+                </header>
+                <div class="pf-v6-c-modal-box__body pf-c-modal-box__body">
+                    <form id="buy-points-form" class="pf-v6-c-form pf-c-form">
+                        <p class="pf-v6-c-content pf-m-sm pf-v6-u-mb-md">
+                            Exchange USDT from your wallet for reward points. Current rate: <strong>1 USDT = 100 Points</strong>
+                        </p>
+                        <div class="pf-v6-c-form__group pf-c-form__group">
+                            <label class="pf-v6-c-form__label pf-c-form__label" for="usdt-amount">
+                                <span class="pf-v6-c-form__label-text">USDT Amount</span>
+                            </label>
+                            <input type="number" id="usdt-amount" class="pf-v6-c-form-control pf-c-form-control" min="1" step="0.01" required>
+                            <p class="pf-v6-c-form__helper-text">
+                                You will receive <strong id="points-preview">0</strong> points
+                            </p>
+                        </div>
+                        <div id="buy-points-alert" class="pf-v6-c-alert pf-m-inline hidden pf-v6-u-mb-md"></div>
+                        <footer class="pf-v6-c-modal-box__footer pf-c-modal-box__footer">
+                            <button type="submit" class="pf-v6-c-button pf-c-button pf-m-primary">Purchase Points</button>
+                            <button type="button" class="pf-v6-c-button pf-c-button pf-m-link buy-points-close">Cancel</button>
+                        </footer>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ticket Purchase Modal -->
+    <div id="purchase-ticket-modal" class="pf-v6-c-backdrop pf-c-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="purchase-ticket-title">
+        <div class="pf-v6-l-bullseye pf-l-bullseye">
+            <div class="pf-v6-c-modal-box pf-c-modal-box" role="document">
+                <button class="pf-v6-c-button pf-c-button pf-m-plain modal-close ticket-purchase-close" type="button" aria-label="Close ticket purchase modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <header class="pf-v6-c-modal-box__header pf-c-modal-box__header">
+                    <h1 class="pf-v6-c-modal-box__title pf-c-modal-box__title" id="purchase-ticket-title">Purchase Race Ticket</h1>
+                </header>
+                <div class="pf-v6-c-modal-box__body pf-c-modal-box__body">
+                    <form id="purchase-ticket-form" class="pf-v6-c-form pf-c-form">
+                        <div id="ticket-item-details"></div>
+                        <div class="pf-v6-c-form__group pf-c-form__group">
+                            <label class="pf-v6-c-form__label pf-c-form__label" for="ticket-pilot-name">
+                                <span class="pf-v6-c-form__label-text">Pilot Name</span>
+                            </label>
+                            <input type="text" id="ticket-pilot-name" class="pf-v6-c-form-control pf-c-form-control" required>
+                        </div>
+                        <div class="pf-v6-c-form__group pf-c-form__group">
+                            <label class="pf-v6-c-form__label pf-c-form__label" for="ticket-event-name">
+                                <span class="pf-v6-c-form__label-text">Event Name</span>
+                            </label>
+                            <input type="text" id="ticket-event-name" class="pf-v6-c-form-control pf-c-form-control" placeholder="e.g. PixelPilot Grand Prix" required>
+                        </div>
+                        <div class="pf-v6-c-form__group pf-c-form__group">
+                            <label class="pf-v6-c-form__label pf-c-form__label" for="ticket-event-date">
+                                <span class="pf-v6-c-form__label-text">Event Date</span>
+                            </label>
+                            <input type="date" id="ticket-event-date" class="pf-v6-c-form-control pf-c-form-control">
+                        </div>
+                        <div class="pf-v6-c-form__group pf-c-form__group">
+                            <label class="pf-v6-c-form__label pf-c-form__label" for="ticket-payment-amount">
+                                <span class="pf-v6-c-form__label-text">Payment Amount (USDT)</span>
+                            </label>
+                            <input type="number" step="0.01" id="ticket-payment-amount" class="pf-v6-c-form-control pf-c-form-control" min="0" required>
+                        </div>
+                        <div class="pf-v6-c-form__group pf-c-form__group">
+                            <label class="pf-v6-c-form__label pf-c-form__label" for="ticket-transaction-hash">
+                                <span class="pf-v6-c-form__label-text">Transaction Hash</span>
+                            </label>
+                            <input type="text" id="ticket-transaction-hash" class="pf-v6-c-form-control pf-c-form-control" placeholder="Blockchain transaction hash" required>
+                            <p class="pf-v6-c-form__helper-text">
+                                Enter the transaction hash from your USDT payment for verification
+                            </p>
+                        </div>
+                        <footer class="pf-v6-c-modal-box__footer pf-c-modal-box__footer">
+                            <button type="submit" class="pf-v6-c-button pf-c-button pf-m-primary">Submit Ticket Purchase</button>
+                            <button type="button" class="pf-v6-c-button pf-c-button pf-m-link ticket-purchase-close">Cancel</button>
+                        </footer>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="session-manager.js"></script>
+    <script src="patternfly-v6-bridge.js"></script>
+    <script src="rewards.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(sqlite3:*)",
+      "Bash(rg:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(node:*)",
+      "WebFetch(domain:www.patternfly.org)",
+      "Bash(sed:*)"
+    ],
+    "deny": []
+  }
+}

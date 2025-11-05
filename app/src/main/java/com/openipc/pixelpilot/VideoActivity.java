@@ -59,6 +59,7 @@ import com.openipc.pixelpilot.osd.OSDManager;
 import com.openipc.videonative.DecodingInfo;
 import com.openipc.videonative.IVideoParamsChanged;
 import com.openipc.videonative.VideoPlayer;
+import com.openipc.videonative.VideoPlayerHolder;
 import com.openipc.wfbngrtl8812.WfbNGStats;
 import com.openipc.wfbngrtl8812.WfbNGStatsChanged;
 import com.openipc.wfbngrtl8812.WfbNgLink;
@@ -111,6 +112,40 @@ public class VideoActivity extends AppCompatActivity implements IVideoParamsChan
     private ConstraintLayout constraintLayout;
     private ConstraintSet constraintSet;
     private WfbNgLink wfbLink;
+    // Avoid tearing down networking/decoder when launching XR NativeActivity
+    private static volatile boolean launchingXR = false;
+
+    public static final String ACTION_BACKEND_CHANNEL_UPDATE = "com.openipc.pixelpilot.action.BACKEND_CHANNEL_UPDATE";
+    public static final String EXTRA_BACKEND_CHANNEL = "extra_backend_channel";
+
+    private final BroadcastReceiver backendChannelReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent == null || intent.getAction() == null) {
+                return;
+            }
+            if (!ACTION_BACKEND_CHANNEL_UPDATE.equals(intent.getAction())) {
+                return;
+            }
+            int channel = intent.getIntExtra(EXTRA_BACKEND_CHANNEL, -1);
+            if (channel <= 0) {
+                return;
+            }
+            handler.post(() -> applyBackendChannelUpdate(channel));
+        }
+    };
+
+    private boolean autoLaunchVrScheduled = false;
+    private final Runnable autoLaunchVrRunnable = new Runnable() {
+        @Override
+        public void run() {
+            autoLaunchVrScheduled = false;
+            if (isFinishing() || launchingXR) {
+                return;
+            }
+            launchImmersiveVR();
+        }
+    };
 
     public boolean getVRSetting() {
         return getSharedPreferences("general", Context.MODE_PRIVATE).getBoolean("vr-mode", false);
@@ -121,6 +156,22 @@ public class VideoActivity extends AppCompatActivity implements IVideoParamsChan
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("vr-mode", v);
         editor.commit();
+    }
+
+    private void scheduleAutoLaunchVr() {
+        if (autoLaunchVrScheduled) {
+            return;
+        }
+        autoLaunchVrScheduled = true;
+        handler.postDelayed(autoLaunchVrRunnable, 10_000L);
+    }
+
+    private void cancelAutoLaunchVr() {
+        if (!autoLaunchVrScheduled) {
+            return;
+        }
+        handler.removeCallbacks(autoLaunchVrRunnable);
+        autoLaunchVrScheduled = false;
     }
 
     public static int getChannel(Context context) {
@@ -271,6 +322,8 @@ public class VideoActivity extends AppCompatActivity implements IVideoParamsChan
 
         // wfbNg VPN Service
         startVpnService();
+
+        scheduleAutoLaunchVr();
     }
 
     // ----------------------------------------------------------------------------
@@ -315,6 +368,7 @@ public class VideoActivity extends AppCompatActivity implements IVideoParamsChan
      */
     private void initializeVideoPlayers() {
         videoPlayer = new VideoPlayer(this);
+        VideoPlayerHolder.setInstance(videoPlayer);
         videoPlayer.setIVideoParamsChanged(this);
 
         isVRMode = getVRSetting();
@@ -587,6 +641,74 @@ public class VideoActivity extends AppCompatActivity implements IVideoParamsChan
             resetApp();
             return false;
         });
+
+        // Immersive OpenXR — keep 2D running
+        MenuItem immersiveVRItem = vrMenu.add("Launch Immersive VR");
+        immersiveVRItem.setOnMenuItemClickListener(item -> {
+            launchImmersiveVR();
+            return true;
+        });
+
+        // Immersive OpenXR — take over video (stop 2D surface)
+        MenuItem immersiveTakeoverItem = vrMenu.add("Launch VR Takeover");
+        immersiveTakeoverItem.setOnMenuItemClickListener(item -> {
+            launchImmersiveVRTakeover();
+            return true;
+        });
+    }
+
+    private void launchImmersiveVR() {
+        cancelAutoLaunchVr();
+        try {
+            launchingXR = true;
+            Intent xrIntent = new Intent(this, OpenXrNativeActivity.class);
+            xrIntent.setAction(Intent.ACTION_MAIN);
+            xrIntent.addCategory("org.khronos.openxr.intent.category.IMMERSIVE_HMD");
+            try {
+                startActivity(xrIntent);
+                Log.d(TAG, "Launching immersive OpenXR NativeActivity (keep 2D)");
+                handler.postDelayed(() -> moveTaskToBack(true), 300);
+            } catch (Exception ex) {
+                Log.e(TAG, "Failed to launch immersive VR mode", ex);
+                Toast.makeText(this, "VR mode not available on this device", Toast.LENGTH_SHORT).show();
+                launchingXR = false;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to launch immersive VR mode", e);
+            Toast.makeText(this, "VR mode not available on this device", Toast.LENGTH_SHORT).show();
+            launchingXR = false;
+        }
+    }
+
+    private void launchImmersiveVRTakeover() {
+        cancelAutoLaunchVr();
+        try {
+            launchingXR = true;
+            Intent xrIntent = new Intent(this, OpenXrNativeActivity.class);
+            xrIntent.setAction(Intent.ACTION_MAIN);
+            xrIntent.addCategory("org.khronos.openxr.intent.category.IMMERSIVE_HMD");
+            try {
+                startActivity(xrIntent);
+                Log.d(TAG, "Launching immersive OpenXR NativeActivity (takeover)");
+                handler.postDelayed(this::finish, 300);
+            } catch (Exception ex) {
+                Log.e(TAG, "Failed to launch immersive VR mode (takeover)", ex);
+                Toast.makeText(this, "VR mode not available on this device", Toast.LENGTH_SHORT).show();
+                launchingXR = false;
+            }
+            new Thread(() -> {
+                try {
+                    if (videoPlayer != null && videoPlayer.isRunning()) {
+                        videoPlayer.stopAudio();
+                        videoPlayer.stop();
+                    }
+                } catch (Throwable ignored) {}
+            }).start();
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to launch immersive VR mode (takeover)", e);
+            Toast.makeText(this, "VR mode not available on this device", Toast.LENGTH_SHORT).show();
+            launchingXR = false;
+        }
     }
 
     /**
@@ -1268,13 +1390,16 @@ public class VideoActivity extends AppCompatActivity implements IVideoParamsChan
         usbFilter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
         usbFilter.addAction(WfbLinkManager.ACTION_USB_PERMISSION);
         IntentFilter batFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        IntentFilter backendFilter = new IntentFilter(ACTION_BACKEND_CHANNEL_UPDATE);
 
         if (Build.VERSION.SDK_INT >= 33) {
             registerReceiver(wfbLinkManager, usbFilter, Context.RECEIVER_NOT_EXPORTED);
             registerReceiver(batteryReceiver, batFilter, Context.RECEIVER_NOT_EXPORTED);
+            registerReceiver(backendChannelReceiver, backendFilter, Context.RECEIVER_NOT_EXPORTED);
         } else {
             registerReceiver(wfbLinkManager, usbFilter);
             registerReceiver(batteryReceiver, batFilter);
+            registerReceiver(backendChannelReceiver, backendFilter);
         }
     }
 
@@ -1287,11 +1412,20 @@ public class VideoActivity extends AppCompatActivity implements IVideoParamsChan
             unregisterReceiver(batteryReceiver);
         } catch (IllegalArgumentException ignored) {
         }
+        try {
+            unregisterReceiver(backendChannelReceiver);
+        } catch (IllegalArgumentException ignored) {
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        cancelAutoLaunchVr();
+        if (launchingXR) {
+            Log.d(TAG, "onPause: launchingXR=true, skipping teardown");
+            return;
+        }
 
         unregisterReceivers();
 
@@ -1308,17 +1442,23 @@ public class VideoActivity extends AppCompatActivity implements IVideoParamsChan
 
     @Override
     protected void onStop() {
-        MavlinkNative.nativeStop(this);
-        handler.removeCallbacks(runnable);
-        unregisterReceivers();
-        wfbLinkManager.stopAdapters();
-        videoPlayer.stop();
-        videoPlayer.stopAudio();
+        if (!launchingXR) {
+            MavlinkNative.nativeStop(this);
+            handler.removeCallbacks(runnable);
+            unregisterReceivers();
+            wfbLinkManager.stopAdapters();
+            videoPlayer.stop();
+            videoPlayer.stopAudio();
+        } else {
+            Log.d(TAG, "onStop: launchingXR=true, skipping teardown");
+        }
         super.onStop();
     }
 
     @Override
     protected void onResume() {
+        // Reset XR launching flag when returning to this activity
+        launchingXR = false;
         registerReceivers();
 
         wfbLinkManager.setChannel(getChannel(this));
@@ -1344,13 +1484,23 @@ public class VideoActivity extends AppCompatActivity implements IVideoParamsChan
         if (currentChannel == channel) {
             return;
         }
-        SharedPreferences prefs = getSharedPreferences("general", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt("wifi-channel", channel);
-        editor.apply();
-        wfbLinkManager.stopAdapters();
-        wfbLinkManager.setChannel(channel);
-        wfbLinkManager.startAdapters();
+        applyBackendChannelUpdate(channel);
+    }
+
+    private void applyBackendChannelUpdate(int channel) {
+        if (wfbLinkManager == null) {
+            Log.w(TAG, "applyBackendChannelUpdate: wfbLinkManager unavailable");
+            return;
+        }
+        try {
+            SharedPreferences prefs = getSharedPreferences("general", Context.MODE_PRIVATE);
+            prefs.edit().putInt("wifi-channel", channel).apply();
+            wfbLinkManager.stopAdapters();
+            wfbLinkManager.setChannel(channel);
+            wfbLinkManager.startAdapters();
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to apply backend channel update", e);
+        }
     }
 
     @Override
@@ -1522,4 +1672,13 @@ public class VideoActivity extends AppCompatActivity implements IVideoParamsChan
             }
         });
     }
+
+    @Override
+    protected void onDestroy() {
+        launchingXR = false;
+        cancelAutoLaunchVr();
+        VideoPlayerHolder.setInstance(null);
+        super.onDestroy();
+    }
+
 }

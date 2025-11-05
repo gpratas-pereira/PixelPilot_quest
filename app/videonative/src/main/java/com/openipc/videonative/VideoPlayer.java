@@ -9,7 +9,6 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -35,8 +34,8 @@ public class VideoPlayer implements IVideoParamsChanged {
     private Timer timer;
 
     // Setup as much as possible without creating the decoder
-    public VideoPlayer(final AppCompatActivity parent) {
-        this.context = parent;
+    public VideoPlayer(final Context context) {
+        this.context = context;
         nativeVideoPlayer = nativeInitialize(context);
     }
 

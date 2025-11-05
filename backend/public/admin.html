@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en" class="pf-v6-theme-dark>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FPVue Pit Lane Control</title>
+    <link rel="stylesheet" href="/patternfly/patternfly.min.css">
+    <link rel="stylesheet" href="/patternfly/patternfly-addons.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="notification-container" class="pf-v6-c-alert-group pf-m-toast" aria-live="polite" aria-atomic="true"></div>
+
+    <div class="pf-v6-c-page">
+        <header class="pf-v6-c-masthead">
+            <div class="pf-v6-c-masthead__main">
+                <div class="pf-v6-c-masthead__brand">
+                    <a class="pf-v6-c-masthead__brand-link" href="index.html" aria-label="FPVue dashboard">
+                        <img src="https://vsqxljjsdaatrdvljost.supabase.co/storage/v1/object/public/images/Global%20FPV%20Arena%20Logo.webp" alt="Global FPV Arena" class="pf-v6-c-brand" style="height: 100px; width: auto;">
+                    </a>
+                </div>
+            </div>
+            <div class="pf-v6-c-masthead__content">
+                <div class="pf-v6-c-toolbar pf-m-full-height pf-m-static">
+                    <div class="pf-v6-c-toolbar__content">
+                        <div class="pf-v6-c-toolbar__content-section">
+                            <div class="pf-v6-c-toolbar__group pf-m-icon-button-group pf-m-align-right pf-m-spacer-none pf-m-spacer-md-on-md">
+                            <div class="pf-v6-c-toolbar__item pf-m-hidden-on-lg">
+                                <button class="pf-v6-c-menu-toggle pf-m-plain" type="button" aria-expanded="false" aria-label="Actions">
+                                <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            </div>
+                            <!-- User Avatar Dropdown -->
+                            <div id="user-avatar-dropdown" class="pf-v6-c-menu hidden" data-required-group="pitlane">
+                                <button class="pf-v6-c-menu__toggle pf-m-plain" type="button" id="user-avatar-toggle" aria-expanded="false" aria-haspopup="true" style="border: none;background-color: white;">
+                                    <div class="pf-v6-c-avatar pf-m-md">
+                                        <img id="header-user-avatar" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNGNEY0RjQiLz4KPGNpcmNsZSBjeD0iMjAiIGN5PSIxNiIgcj0iNiIgZmlsbD0iIzZBNkE2QSIvPgo8cGF0aCBkPSJNOCAzMkM4IDI1LjM3MjYgMTMuMzcyNiAyMCAyMCAyMEMyNi42Mjc0IDIwIDMyIDI1LjM3MjYgMzIgMzJIMzBDMzAgMjYuNDc3MSAyNS41MjI5IDIyIDIwIDIyQzE0LjQ3NzEgMjIgMTAgMjYuNDc3MSAxMCAzMkg4WiIgZmlsbD0iIzZBNkE2QSIvPgo8L3N2Zz4K" alt="User avatar" />
+                                    </div>
+                                    <span class="pf-v6-u-ml-sm pf-v6-u-color-light-100" id="header-user-name">Admin</span>
+                                    <span class="pf-v6-c-menu__toggle-icon pf-v6-u-ml-sm">
+                                        <i class="fas fa-caret-down pf-v6-u-color-light-100" aria-hidden="true"></i>
+                                    </span>
+                                </button>
+                                <div class="pf-v6-c-menu__content">
+                                    <ul class="pf-v6-c-menu__list" hidden>
+                                        <li class="pf-v6-c-menu__list-item">
+                                            <button class="pf-v6-c-menu__item" type="button" id="header-logout-btn">
+                                                <span class="pf-v6-c-menu__item-main">
+                                                    <i class="fas fa-sign-out-alt pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                                    Sign out
+                                                </span>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="pf-v6-c-page__sidebar pf-m-dark">
+            <div class="pf-v6-c-page__sidebar-body">
+                <nav class="pf-v6-c-nav" aria-label="Page navigation">
+                    <ul class="pf-v6-c-nav__list">
+                        <li class="pf-v6-c-nav__item pf-c-nav__item" data-required-group="ops">
+                            <a class="pf-v6-c-nav__link pf-c-nav__link" href="index.html">Device Management</a>
+                        </li>
+                        <li class="pf-v6-c-nav__item" data-required-group="pitlane">
+                            <a class="pf-v6-c-nav__link pf-m-current" href="admin.html" aria-current="page">Pitlane Management</a>
+                        </li>
+                        <li class="pf-v6-c-nav__item" data-required-group="rewards_admin">
+                            <a class="pf-v6-c-nav__link" href="rewards-admin.html">Rewards Management</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <main class="pf-v6-c-page__main" tabindex="-1">
+            <section class="pf-v6-c-page__main-section pf-m-limit-width">
+                <div class="pf-v6-c-page__main-body">
+                    <div class="pf-v6-c-content">
+                        <h1 class="pf-v6-c-title pf-m-2xl">Pit lane control center</h1>
+                        <p class="pf-v6-c-content">
+                            Authenticate race crew, verify USDT payments, and bind pilots to headsets before each launch window.
+                        </p>
+                    </div>
+                </div>
+            </section>
+            <section class="pf-v6-c-page__main-section pf-m-limit-width pf-m-fill">
+                <div class="pf-v6-c-page__main-body">
+                        <div class="pf-v6-c-card hidden" id="admin-tools-section" data-required-group="pitlane">
+                            <div class="pf-v6-c-card__title">
+                                <div class="pf-v6-c-card__title-text">
+                                    <h2 class="pf-v6-c-title pf-m-lg">
+                                        <i class="fas fa-tachometer-alt pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                        Pit lane control panel
+                                    </h2>
+                                    <p class="pf-v6-c-content">Review payments and map pilots to headsets in real time.</p>
+                                </div>
+                                <div class="pf-v6-c-card__actions" style="margin-top:2%">
+                                    <button type="button" class="pf-v6-c-button pf-m-primary" id="refresh-admin-data">
+                                        <i class="fas fa-sync pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                        Refresh data
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="pf-v6-c-card__body">
+                                <!-- First Row: USDT Wallet & Pit Lane Assignments -->
+                                <div class="pf-v6-l-gallery pf-m-gutter pf-v6-u-mb-lg" style="--pf-v6-l-gallery--GridTemplateColumns: 1fr 1fr;">
+                                    <div class="pf-v6-c-card">
+                                        <div class="pf-v6-c-card__title">
+                                            <h3 class="pf-v6-c-title pf-m-md">
+                                                <i class="fas fa-link pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                                Pit lane assignments
+                                            </h3>
+                                        </div>
+                                        <div class="pf-v6-c-card__body">
+                                            <form id="assignment-form" class="pf-v6-c-form">
+                                                <div class="pf-v6-c-form__group">
+                                                    <label class="pf-v6-c-form__label" for="assignment-ticket">
+                                                        <span class="pf-v6-c-form__label-text">Ticket</span>
+                                                    </label>
+                                                    <select id="assignment-ticket" class="pf-v6-c-form-control" required></select>
+                                                </div>
+                                                <div class="pf-v6-c-form__group">
+                                                    <label class="pf-v6-c-form__label" for="assignment-device">
+                                                        <span class="pf-v6-c-form__label-text">Device</span>
+                                                    </label>
+                                                    <select id="assignment-device" class="pf-v6-c-form-control" required></select>
+                                                </div>
+                                                <div class="pf-v6-c-form__group">
+                                                    <label class="pf-v6-c-form__label" for="assignment-notes">
+                                                        <span class="pf-v6-c-form__label-text">Notes</span>
+                                                    </label>
+                                                    <textarea id="assignment-notes" class="pf-v6-c-form-control" rows="3" placeholder="Special instructions or notes"></textarea>
+                                                </div>
+                                                <div class="pf-v6-c-form__actions">
+                                                    <button type="submit" class="pf-v6-c-button pf-m-primary">Bind headset</button>
+                                                </div>
+                                            </form>
+                                            <div id="assignment-alert" class="pf-v6-c-alert pf-m-inline hidden" role="alert"></div>
+                                        </div>
+                                    </div>
+                                                                        <div class="pf-v6-c-card">
+                                        <div class="pf-v6-c-card__title">
+                                            <div class="pf-v6-c-card__title-text">
+                                                <h3 class="pf-v6-c-title pf-m-md">
+                                                    <i class="fas fa-users pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                                    Crewed pilots
+                                                </h3>
+                                            </div>
+                                            <div class="pf-v6-c-card__actions" style="margin-top:2%">
+                                                <button type="button" class="pf-v6-c-button pf-m-secondary pf-m-small" id="refresh-registrations">
+                                                    <i class="fas fa-sync pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                                    Refresh registrations
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="pf-v6-c-card__body" style="max-height: 400px; overflow-y: auto;">
+                                            <div id="registrations-alert" class="pf-v6-c-alert pf-m-inline hidden" role="alert"></div>
+                                            <div id="registrations-list" class="registrations-list empty-state">
+                                                <p class="pf-v6-c-content">No pilots currently mapped to headsets.</p>
+                                            </div>
+                                        </div>
+                                    </div>  
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </section>
+
+            
+            <section class="pf-v6-c-page__main-section pf-m-limit-width pf-m-fill">
+                <div class="pf-v6-c-page__main-body">
+                    <div class="pf-v6-l-gallery pf-m-gutter" style="--pf-v6-l-gallery--GridTemplateColumns: 1fr;">
+                        <div class="pf-v6-c-card hidden" id="admin-tools-section" data-required-group="pitlane">
+                            <div class="pf-v6-c-card__title">
+                                <div class="pf-v6-c-card__title-text">
+                                    <h2 class="pf-v6-c-title pf-m-lg">
+                                        <i class="fas fa-tachometer-alt pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                        Payment verification
+                                    </h2>
+                                    <p class="pf-v6-c-content">Review payments from tickets, marketplace and wallet top-ups.</p>
+                                </div>
+                                <div class="pf-v6-c-card__actions"  style="margin-top:2%">
+                                    <button type="button" class="pf-v6-c-button pf-m-primary" id="refresh-admin-data">
+                                        <i class="fas fa-sync pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                        Refresh data
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="pf-v6-c-card__body">
+                                <!-- First Row: USDT Wallet (full width) -->
+                                <div class="pf-v6-l-gallery pf-m-gutter pf-v6-u-mb-lg" style="--pf-v6-l-gallery--GridTemplateColumns: 1fr;">
+                                    <div class="pf-v6-c-card">
+                                        <div class="pf-v6-c-card__body" style="max-height: 600px; overflow-y: auto;">
+                                            <div class="pf-v6-c-toolbar" id="tickets-controls">
+                                                <div class="pf-v6-c-toolbar__content" style="margin-top:1%">
+                                                    <div class="pf-v6-c-toolbar__item">
+                                                        <label class="pf-v6-c-form__label" for="ticket-status-filter">
+                                                            <span class="pf-v6-c-form__label-text">Status</span>
+                                                        </label>
+                                                        <select id="ticket-status-filter" class="pf-v6-c-form-control">
+                                                            <option value="all">All statuses</option>
+                                                            <option value="pending">Pending</option>
+                                                            <option value="paid">Paid</option>
+                                                            <option value="canceled">Canceled</option>
+                                                            <option value="refunded">Refunded</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="pf-v6-c-toolbar__item">
+                                                        <label class="pf-v6-c-check">
+                                                            <input type="checkbox" class="pf-v6-c-check__input" id="ticket-show-archived">
+                                                            <span class="pf-v6-c-check__label">Show archived</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <ul class="pf-v6-c-data-list" role="list" aria-label="With headings data list example"
+                                            id="data-list-with-headings"
+                                            >
+                                            <li class="pf-v6-c-data-list__item">
+                                                <div class="pf-v6-c-data-list__item-row">
+                                                <div class="pf-v6-c-data-list__item-content">
+                                                    <div class="pf-v6-c-data-list__cell">
+                                                    <h2 id="data-list-with-headings-item-1">Pilot</h2>
+                                                    </div>
+                                                    <div class="pf-v6-c-data-list__cell">Package</div>
+                                                    <div class="pf-v6-c-data-list__cell">Amount</div>
+                                                    <div class="pf-v6-c-data-list__cell">Status</div>
+                                                    <div class="pf-v6-c-data-list__cell">Redeemed</div>
+                                                    <div class="pf-v6-c-data-list__cell">Reference</div>
+                                                    <div class="pf-v6-c-data-list__cell">Purchased</div>
+                                                    <div class="pf-v6-c-data-list__cell">Actions</div>
+                                                </div>
+                                                </div>
+                                            </li>
+                                            </ul>
+                                            <div id="admin-tickets-alert" class="pf-v6-c-alert pf-m-inline hidden" role="alert"></div>
+                                            <div class="data-table-wrapper">
+                                                <table class="pf-v6-c-table pf-m-grid-md" role="grid">
+                                                    <tbody id="tickets-table-body">
+                                                        <tr class="empty-row">
+                                                            <td colspan="8">No tickets to display.</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <p class="pf-v6-c-content pf-v6-u-mt-md" id="tickets-summary"></p>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <!-- Second Row: Marketplace Purchases (full width) -->
+                                <div class="pf-v6-l-gallery pf-m-gutter pf-v6-u-mb-lg" style="--pf-v6-l-gallery--GridTemplateColumns: 1fr;">
+                                    <div class="pf-v6-c-card">
+                                        <div class="pf-v6-c-card__title">
+                                            <div class="pf-v6-c-card__title-text">
+                                                <h3 class="pf-v6-c-title pf-m-md">
+                                                    <i class="fas fa-shopping-cart pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                                    Marketplace Purchases
+                                                </h3>
+                                            </div>
+                                            <div class="pf-v6-c-card__actions" style="margin-top:2%">
+                                                <button type="button" class="pf-v6-c-button pf-m-secondary pf-m-small" id="refresh-admin-purchases">
+                                                    <i class="fas fa-sync pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                                    Refresh purchases
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="pf-v6-c-card__body" style="max-height: 500px; overflow-y: auto;">
+                                            <div class="pf-v6-c-toolbar" id="purchases-controls">
+                                                <div class="pf-v6-c-toolbar__content">
+                                                    <div class="pf-v6-c-toolbar__item">
+                                                        <label class="pf-v6-c-form__label" for="purchases-pilot-filter">
+                                                            <span class="pf-v6-c-form__label-text">Filter by Pilot</span>
+                                                        </label>
+                                                        <select id="purchases-pilot-filter" class="pf-v6-c-form-control">
+                                                            <option value="all">All pilots</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="admin-purchases-alert" class="pf-v6-c-alert pf-m-inline hidden" role="alert"></div>
+                                            <div class="data-table-wrapper">
+                                                <table class="pf-v6-c-table pf-m-grid-md" role="grid">
+                                                    <ul class="pf-v6-c-data-list" role="list" aria-label="With headings data list example"
+                                            id="data-list-with-headings"
+                                            >
+                                            <li class="pf-v6-c-data-list__item">
+                                                <div class="pf-v6-c-data-list__item-row">
+                                                <div class="pf-v6-c-data-list__item-content">
+                                                    <div class="pf-v6-c-data-list__cell">
+                                                    <h2 id="data-list-with-headings-item-1">Pilot</h2>
+                                                    </div>
+                                                    <div class="pf-v6-c-data-list__cell">Item</div>
+                                                    <div class="pf-v6-c-data-list__cell">Payment Method</div>
+                                                    <div class="pf-v6-c-data-list__cell">Amount Paid</div>
+                                                    <div class="pf-v6-c-data-list__cell">Status</div>
+                                                    <div class="pf-v6-c-data-list__cell">Purchased</div>
+                                                </div>
+                                                </div>
+                                            </li>
+                                            </ul>
+                                                    <tbody id="admin-purchases-table-body">
+                                                        <tr class="empty-row">
+                                                            <td colspan="6">No purchases to display.</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            
+                                            <p class="pf-v6-c-content pf-v6-u-mt-md" id="purchases-summary"></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Third Row: Wallet Payments (full width) -->
+                                <div class="pf-v6-l-gallery pf-m-gutter pf-v6-u-mb-lg" style="--pf-v6-l-gallery--GridTemplateColumns: 1fr;">
+                                    <div class="pf-v6-c-card">
+                                        <div class="pf-v6-c-card__title">
+                                            <div class="pf-v6-c-card__title-text">
+                                                <h3 class="pf-v6-c-title pf-m-md">
+                                                    <i class="fas fa-credit-card pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                                    USDT Wallet & Payments
+                                                </h3>
+                                            </div>
+                                            <div class="pf-v6-c-card__actions" style="margin-top:2%">
+                                                <button type="button" class="pf-v6-c-button pf-m-secondary pf-m-small" id="refresh-wallet-payments">
+                                                    <i class="fas fa-sync pf-v6-u-mr-sm" aria-hidden="true"></i>
+                                                    Refresh payments
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="pf-v6-c-card__body" style="max-height: 600px; overflow-y: auto;">
+                                            <form id="wallet-settings-form" class="pf-v6-c-form">
+                                                <div class="pf-v6-c-form__group">
+                                                    <label class="pf-v6-c-form__label" for="payment-wallet-address">
+                                                        <span class="pf-v6-c-form__label-text">Receiving wallet address</span>
+                                                    </label>
+                                                    <input type="text" id="payment-wallet-address" class="pf-v6-c-form-control" placeholder="Paste USDT wallet (TRC20 / ERC20)" autocomplete="off">
+                                                </div>
+                                                <div class="pf-v6-c-form__actions" style="margin-bottom:10px">
+                                                    <button type="submit" class="pf-v6-c-button pf-m-primary">Save wallet</button>
+                                                </div>
+                                            </form>
+                                            <div id="wallet-settings-alert" class="pf-v6-c-alert pf-m-inline hidden" role="alert"></div>
+                                            <div class="pf-v6-c-code-block" style="max-height: 56px; margin-bottom:1%">
+                                                <div class="pf-v6-c-code-block__content">
+                                                    <span class="pf-v6-c-code-block__content-text">Current wallet:</span>
+                                                    <code id="wallet-address-display" class="pf-v6-c-code-block__content-code">Not configured</code>
+                                                </div>
+                                                <canvas id="wallet-qr-canvas" class="wallet-qr" aria-label="Wallet QR Code" width="140" height="140"></canvas>
+                                            </div>
+                                        <div class="pf-v6-c-card__body" style="max-height: 500px; overflow-y: auto;">
+                                            <div class="pf-v6-c-toolbar" id="wallet-payments-controls">
+                                                <div class="pf-v6-c-toolbar__content">
+                                                    <div class="pf-v6-c-toolbar__item">
+                                                        <label class="pf-v6-c-form__label" for="wallet-payments-status-filter">
+                                                            <span class="pf-v6-c-form__label-text">Filter by Status</span>
+                                                        </label>
+                                                        <select id="wallet-payments-status-filter" class="pf-v6-c-form-control">
+                                                            <option value="all">All payments</option>
+                                                            <option value="pending">Pending</option>
+                                                            <option value="verified">Verified</option>
+                                                            <option value="admin_approved">Admin Approved</option>
+                                                            <option value="failed">Failed</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="wallet-payments-alert" class="pf-v6-c-alert pf-m-inline hidden" role="alert"></div>
+                                            <div class="data-table-wrapper">
+                                                <table class="pf-v6-c-table pf-m-grid-md" role="grid">
+                                                    <ul class="pf-v6-c-data-list" role="list" aria-label="With headings data list example"
+                                            id="data-list-with-headings"
+                                            >
+                                            <li class="pf-v6-c-data-list__item">
+                                                <div class="pf-v6-c-data-list__item-row">
+                                                <div class="pf-v6-c-data-list__item-content">
+                                                    <div class="pf-v6-c-data-list__cell">
+                                                    <h2 id="data-list-with-headings-item-1">Pilot</h2>
+                                                    </div>
+                                                    <div class="pf-v6-c-data-list__cell">Amount</div>
+                                                    <div class="pf-v6-c-data-list__cell">TX Hash</div>
+                                                    <div class="pf-v6-c-data-list__cell">Status</div>
+                                                    <div class="pf-v6-c-data-list__cell">Date</div>
+                                                    <div class="pf-v6-c-data-list__cell">Actions</div>
+                                                </div>
+                                                </div>
+                                            </li>
+                                            </ul>
+                                                    <tbody id="wallet-payments-table-body">
+                                                        <tr class="empty-row">
+                                                            <td colspan="6">No wallet payments to display.</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <p class="pf-v6-c-content pf-v6-u-mt-md" id="wallet-payments-summary"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="session-manager.js"></script>
+    <script src="patternfly-v6-bridge.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
